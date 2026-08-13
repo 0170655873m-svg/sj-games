@@ -1,0 +1,1102 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>S&J Games — بوابة الألعاب التفاعلية</title>
+<meta name="theme-color" content="#0d2c3a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="S&J Games">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#081b24;--bg2:#0d2c3a;--card:#0f3140;--card2:#123a4b;
+  --line:rgba(151,208,222,.16);--ink:#ecf6f2;--mut:#8fb3ba;
+  --amber:#ffc233;--gold:#ffd76a;--coral:#ff6b5e;--teal:#2dd4bf;--mint:#39d98a;--violet:#a78bfa;
+  --shadow:0 14px 40px rgba(0,0,0,.4);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Tajawal',sans-serif;color:var(--ink);min-height:100dvh;overflow-x:hidden;
+  background:radial-gradient(1100px 600px at 88% -10%,rgba(45,212,191,.16),transparent 60%),
+  radial-gradient(900px 700px at -12% 32%,rgba(255,194,51,.12),transparent 55%),
+  radial-gradient(800px 600px at 55% 115%,rgba(255,107,94,.12),transparent 60%),
+  linear-gradient(180deg,var(--bg2),var(--bg) 60%);background-attachment:fixed}
+h1,h2,h3,.disp{font-family:'Changa',sans-serif}
+::selection{background:var(--amber);color:#08222c}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+input{font-family:inherit}
+#floaties{position:fixed;inset:0;pointer-events:none;z-index:0}
+#floaties span{position:absolute;opacity:.07;animation:floaty ease-in-out infinite alternate}
+@keyframes floaty{from{transform:translateY(-14px) rotate(-6deg)}to{transform:translateY(16px) rotate(7deg)}}
+.screen{display:none;position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:18px clamp(14px,3vw,28px) 100px}
+.screen.active{display:block;animation:fadeup .38s cubic-bezier(.2,.8,.3,1)}
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(57,217,138,.5)}50%{box-shadow:0 0 0 9px rgba(57,217,138,0)}}
+@keyframes slidein{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;padding:12px 22px;
+  border-radius:14px;background:var(--card2);border:1px solid var(--line);color:var(--ink);
+  transition:transform .15s,box-shadow .2s,filter .2s;user-select:none}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.12)}
+.btn:active{transform:scale(.95)}
+.btn.primary{background:linear-gradient(135deg,var(--amber),#ff9d33);color:#241a02;box-shadow:0 8px 24px rgba(255,194,51,.28)}
+.btn.teal{background:linear-gradient(135deg,var(--teal),#14a896);color:#03251f;box-shadow:0 8px 24px rgba(45,212,191,.25)}
+.btn.coral{background:linear-gradient(135deg,var(--coral),#e8474b);color:#fff}
+.btn.violet{background:linear-gradient(135deg,var(--violet),#7c5cd6);color:#fff}
+.btn.ghost{background:transparent}
+.btn.big{width:100%;padding:16px;font-size:17px;border-radius:16px}
+.btn.sm{padding:7px 13px;font-size:13px;border-radius:10px}
+.btn:disabled{opacity:.45;pointer-events:none}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:13px;font-weight:700}
+.input{width:100%;padding:13px 16px;border-radius:13px;border:1px solid var(--line);background:rgba(4,20,28,.6);color:var(--ink);font-size:15px;outline:none;transition:border .2s,box-shadow .2s}
+.input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(45,212,191,.18)}
+.mut{color:var(--mut)}.small{font-size:13px}
+.topbar{display:flex;align-items:center;gap:12px;padding:8px 0 18px;flex-wrap:wrap}
+.topbar h2{font-size:clamp(20px,4vw,26px)}
+.backbtn{width:42px;height:42px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-size:19px;transition:.2s}
+.backbtn:hover{background:var(--teal);color:#03251f;transform:translateX(3px)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.grid2{grid-template-columns:1fr}}
+.divider{height:1px;background:var(--line);margin:16px 0}
+#s-auth.active{max-width:1200px}
+.auth-wrap{min-height:calc(100dvh - 40px);display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:center}
+@media(max-width:860px){.auth-wrap{grid-template-columns:1fr;padding-top:14px}}
+.brand-logo{font-size:clamp(44px,7vw,76px);font-weight:800;line-height:1.05}
+.brand-logo .amp{color:var(--amber);text-shadow:0 0 26px rgba(255,194,51,.5)}
+.brand-logo .games{display:block;font-size:.42em;color:var(--teal);letter-spacing:8px}
+.feat-pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.g-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:11px;background:#fff;color:#1f1f1f;
+  font-weight:800;font-size:16px;padding:14px;border-radius:14px;transition:.2s}
+.g-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(255,255,255,.15)}
+.g-btn:disabled{opacity:.5;cursor:not-allowed}
+.g-btn .spinner{width:18px;height:18px;border:3px solid rgba(0,0,0,.2);border-top-color:#1f1f1f;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.g-btn.loading .spinner{display:block}
+.g-btn.loading span{display:none}
+.hero{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:6px 2px 20px}
+.hero h1{font-size:clamp(22px,4.5vw,32px)}
+.mode-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
+@media(max-width:780px){.mode-grid{grid-template-columns:1fr}}
+.mode{position:relative;overflow:hidden;border-radius:22px;padding:26px;border:1px solid var(--line);cursor:pointer;
+  transition:transform .22s,box-shadow .25s;text-align:right;color:var(--ink);display:block;width:100%}
+.mode:hover{transform:translateY(-5px) scale(1.01)}.mode:active{transform:scale(.98)}
+.mode .ic{font-size:44px;display:inline-block;transition:transform .3s}
+.mode:hover .ic{transform:scale(1.18) rotate(-8deg)}
+.mode h3{font-size:26px;margin:10px 0 6px}
+.mode p{color:rgba(255,255,255,.85);font-size:14px;line-height:1.7}
+.mode .go{margin-top:16px;display:inline-flex;gap:8px;font-weight:800;font-size:14px;padding:9px 18px;border-radius:99px;background:rgba(0,0,0,.28)}
+.mode-remote{background:linear-gradient(140deg,#0e4d52,#0b6b5d 60%,#12876e);box-shadow:0 18px 44px rgba(18,135,110,.3)}
+.mode-local{background:linear-gradient(140deg,#7a4d0b,#b3720e 55%,#d98a12);box-shadow:0 18px 44px rgba(217,138,18,.28)}
+.mode::after{content:'';position:absolute;inset:0;background:radial-gradient(400px 160px at 85% 0%,rgba(255,255,255,.14),transparent 60%);pointer-events:none}
+.gamepick{display:flex;gap:16px;align-items:center;border-radius:20px;padding:22px;border:1px solid var(--line);cursor:pointer;transition:.22s;text-align:right;width:100%;background:linear-gradient(180deg,var(--card2),var(--card));margin-bottom:12px}
+.gamepick:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.gamepick .em{font-size:50px}
+.gamepick h3{font-size:22px;margin:4px 0}
+.stat{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.stat b{font-family:'Changa';font-size:22px;color:var(--gold);display:block}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:680px){.stats-strip{grid-template-columns:repeat(2,1fr)}}
+.userchip{display:flex;align-items:center;gap:9px;background:var(--card2);border:1px solid var(--line);padding:6px 9px 6px 14px;border-radius:99px}
+.userchip img{width:32px;height:32px;border-radius:99px;object-fit:cover}
+.userchip .av{width:32px;height:32px;border-radius:99px;background:linear-gradient(135deg,var(--amber),var(--coral));display:flex;align-items:center;justify-content:center;font-weight:800;color:#241a02}
+.grp-card{border-top:5px solid var(--c)}
+.pl-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid var(--line);padding:7px 12px;border-radius:99px;font-weight:700;font-size:14px;margin:0 0 8px 8px;animation:pop .3s both}
+.pl-chip b{cursor:pointer;color:var(--coral)}
+.dur-chips{display:flex;gap:8px;flex-wrap:wrap}
+.dur-chips .btn.on{background:linear-gradient(135deg,var(--amber),#ff9d33);color:#241a02}
+.tabs{display:flex;background:rgba(4,20,28,.55);border:1px solid var(--line);border-radius:14px;padding:5px;gap:5px;margin-bottom:16px}
+.tabs button{flex:1;padding:11px;border-radius:10px;font-weight:800;font-size:14px;color:var(--mut);transition:.2s}
+.tabs button.on{background:var(--teal);color:#03251f}
+.room-code{font-family:'Changa';font-size:clamp(30px,7vw,44px);letter-spacing:8px;color:var(--gold);text-align:center;
+  background:rgba(255,194,51,.07);border:2px dashed rgba(255,194,51,.4);border-radius:16px;padding:12px;user-select:all}
+.dot{width:9px;height:9px;border-radius:99px;background:var(--mint);animation:pulse 1.8s infinite}
+.chat-box{height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:12px;background:rgba(4,20,28,.5);border:1px solid var(--line);border-radius:14px}
+.msg{max-width:82%;padding:9px 14px;border-radius:14px;font-size:14px;animation:slidein .25s both;line-height:1.55}
+.msg.me{align-self:flex-start;background:linear-gradient(135deg,#0b6b5d,#12876e);border-bottom-right-radius:4px}
+.msg.them{align-self:flex-end;background:var(--card2);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.sys{align-self:center;background:none;color:var(--mut);font-size:12px}
+.msg b{display:block;font-size:11px;color:var(--gold);margin-bottom:2px}
+.hud{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 18px;margin-bottom:14px}
+.hs{text-align:center;min-width:105px}
+.hs b{display:block;font-size:14px;color:var(--c)}
+.hs .sc{font-family:'Changa';font-size:34px;color:var(--c);display:block;line-height:1.1;transition:.2s}
+.hs .sc.bump{animation:pop .35s}
+.hs .pm{font-size:12px;color:var(--mut);cursor:pointer;opacity:.7}
+.hs .pm:hover{opacity:1;color:var(--ink)}
+.hmid{text-align:center;display:flex;flex-direction:column;gap:5px;align-items:center}
+.turn-chip{font-weight:800;padding:7px 18px;border-radius:99px;border:2px solid var(--c);color:var(--c);background:rgba(255,255,255,.04)}
+.wheel-wrap{position:relative;width:min(320px,84vw);margin:12px auto}
+.wheel-wrap canvas{width:100%;display:block;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))}
+.wheel-pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:32px;z-index:3}
+.wheel-res{text-align:center;font-family:'Changa';font-size:clamp(20px,5vw,28px);color:var(--gold);min-height:38px}
+.secret-hold{position:relative;overflow:hidden;width:100%;padding:28px;font-size:17px;border-radius:18px;
+  background:linear-gradient(135deg,#123c4e,#0e4d52);border:2px solid var(--teal);text-align:center;user-select:none;touch-action:none}
+.secret-hold .fill{position:absolute;inset-inline-start:0;top:0;bottom:0;width:0;background:rgba(45,212,191,.28)}
+.secret-hold span{position:relative;z-index:2}
+.secret-view{background:rgba(4,20,28,.7);border:1px solid var(--line);border-radius:18px;padding:26px 18px;text-align:center;animation:pop .4s}
+.secret-view .big{font-family:'Changa';font-size:clamp(24px,6vw,38px);color:var(--gold);margin:8px 0}
+.ring-wrap{position:relative;width:min(220px,58vw);margin:8px auto}
+.ring-wrap svg{transform:rotate(-90deg);width:100%}
+.ring-time{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Changa';font-weight:800;font-size:44px;direction:ltr}
+.story-text{line-height:2;font-size:15.5px;background:rgba(4,20,28,.5);border-inline-start:4px solid var(--coral);padding:16px;border-radius:12px}
+.clue-chip{display:block;width:100%;text-align:right;background:rgba(255,194,51,.08);border:1px dashed rgba(255,194,51,.4);padding:12px 16px;border-radius:12px;margin-bottom:8px;animation:slidein .3s both}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:18px 0}
+.pod{flex:1;max-width:170px;border-radius:14px 14px 0 0;text-align:center;padding:14px 8px 10px;animation:fadeup .6s both}
+.pod b{font-family:'Changa';display:block;font-size:17px}
+.pod .psc{font-family:'Changa';font-size:26px;color:#132}
+.pod.p1{height:150px;background:linear-gradient(180deg,var(--gold),#c99a12);color:#241a02}
+.pod.p2{height:105px;background:linear-gradient(180deg,#d7e3e8,#9fb4bc);color:#1c2b32;animation-delay:.2s}
+.kv{display:flex;justify-content:space-between;padding:11px 4px;border-bottom:1px dashed var(--line);font-size:14px}
+.kv b{color:var(--gold)}
+.live-timer{font-family:'Changa';font-size:56px;direction:ltr;color:var(--teal)}
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:#132e3a;border:1px solid var(--teal);
+  color:var(--ink);padding:12px 24px;border-radius:99px;font-weight:700;z-index:99;transition:.35s;opacity:0;max-width:88vw;text-align:center}
+#toast.show{transform:translateX(-50%);opacity:1}
+.modal-bg{position:fixed;inset:0;background:rgba(3,12,17,.75);backdrop-filter:blur(4px);z-index:50;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-bg.open{display:flex}
+.modal{width:min(460px,100%);background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;animation:pop .3s both;max-height:88dvh;overflow-y:auto}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:80}
+#chatFab{position:fixed;bottom:20px;inset-inline-start:20px;z-index:40;width:58px;height:58px;border-radius:99px;font-size:24px;
+  background:linear-gradient(135deg,var(--teal),#14a896);box-shadow:0 10px 26px rgba(45,212,191,.4);display:none;animation:pulse 2.4s infinite}
+.step-num{display:inline-flex;width:28px;height:28px;border-radius:99px;background:var(--amber);color:#241a02;font-weight:800;align-items:center;justify-content:center;margin-inline-end:8px;font-size:14px}
+.sync-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;font-size:12px;font-weight:700}
+.sync-pill.on{background:rgba(57,217,138,.12);border:1px solid rgba(57,217,138,.35);color:var(--mint)}
+.sync-pill.off{background:rgba(139,179,186,.1);border:1px solid rgba(139,179,186,.3);color:var(--mut)}
+#loader{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s}
+#loader.hide{opacity:0;pointer-events:none}
+.loader-spin{width:56px;height:56px;border:5px solid var(--card2);border-top-color:var(--amber);border-radius:50%;animation:spin .9s linear infinite}
+.loader-txt{margin-top:18px;font-weight:700;color:var(--mut);font-size:15px}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-spin"></div>
+  <div class="loader-txt" id="loaderTxt">جاري تحميل البيانات من السحابة...</div>
+</div>
+
+<div id="floaties"></div>
+<canvas id="confetti"></canvas>
+<div id="toast"></div>
+<button id="chatFab" onclick="UI.openModal('mChat')">💬</button>
+
+<!-- ══════ ١) الدخول ══════ -->
+<section class="screen" id="s-auth">
+  <div class="auth-wrap">
+    <div>
+      <div class="brand-logo disp">S<span class="amp">&amp;</span>J<span class="games">GAMES</span></div>
+      <p class="mut" style="font-size:17px;margin-top:6px">بوابة الألعاب الجماعية — سجّل مرة واحدة بس 🎲</p>
+      <div class="feat-pills">
+        <span class="chip">🎭 من أنا — ١٠٢٥ شخصية</span>
+        <span class="chip">🕵️ قصة الجريمة — ١٠٥٢ لغز</span>
+        <span class="chip">🎡 قرعة عادلة</span>
+        <span class="chip">☁️ مزامنة السحابة</span>
+        <span class="chip">📱 تطبيق يُثبَّت</span>
+      </div>
+    </div>
+    <div class="card" style="padding:26px">
+      <h3 style="font-size:22px;margin-bottom:4px">سجّل دخولك 🚀</h3>
+      <p class="mut small" style="margin-bottom:18px">سجّل بحساب Google — بياناتك هتتحفظ في السحابة، ومن أي تليفون تاني تلاقي كل حاجة معاك ☁️</p>
+      <button class="g-btn" id="googleBtn" onclick="Auth.google()" disabled>
+        <span class="spinner"></span>
+        <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.2C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.4 6.9-17.7z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.9-6.2C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.6l-7.7-6c-2.1 1.4-4.7 2.2-7.5 2.2-6.3 0-11.6-4.1-13.5-9.6l-7.9 6.2C6.5 42.6 14.6 48 24 48z"/></svg>
+        <span>المتابعة بحساب Google</span>
+      </button>
+      <div id="authError" style="color:var(--coral);font-size:13px;margin-top:10px;text-align:center;display:none"></div>
+      <div style="display:flex;align-items:center;gap:12px;margin:18px 0" class="mut small"><span style="flex:1;height:1px;background:var(--line)"></span>أو<span style="flex:1;height:1px;background:var(--line)"></span></div>
+      <input class="input" id="guestName" placeholder="الدخول كضيف (بياناتك لن تُحفظ)" maxlength="20">
+      <button class="btn big" style="margin-top:12px" onclick="Auth.guest()">🎮 دخول كضيف</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ ٢) الرئيسية ══════ -->
+<section class="screen" id="s-home">
+  <div class="topbar">
+    <div class="brand-logo disp" style="font-size:28px">S<span class="amp">&amp;</span>J</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="sync-pill on" id="syncPill">☁️ متصل بالسحابة</span>
+    </div>
+    <div style="margin-inline-start:auto;display:flex;gap:8px;align-items:center">
+      <button class="btn sm ghost" id="installBtn" onclick="PWA.install()" style="display:none">📲 تثبيت</button>
+      <div class="userchip"><span id="uAvBox"></span><b id="uName" style="font-size:13px"></b>
+        <button class="btn sm ghost" title="خروج" onclick="Auth.out()">⏻</button></div>
+      <button class="btn sm ghost" onclick="UI.settings()">⚙️</button>
+    </div>
+  </div>
+  <div class="hero">
+    <div><h1>تلعب إيه النهاردة يا <span id="heroName" style="color:var(--amber)"></span>؟ 😎</h1>
+      <p class="mut" id="heroDate"></p></div>
+  </div>
+  <div class="mode-grid">
+    <button class="mode mode-local" onclick="go('s-local')">
+      <span class="ic">🛋️</span><h3>اللعب عن قُرب</h3>
+      <p>متجمعين مع بعض؟ اختار اللعبة وابدأ — إعداد الفرق والوقت جواها.</p>
+      <span class="go">اختار اللعبة ←</span>
+    </button>
+    <button class="mode mode-remote" onclick="go('s-remote')">
+      <span class="ic">🌐</span><h3>اللعب عن بُعد</h3>
+      <p>كل واحد على موبايله: غرفة برمز سري، دردشة حية، والمضيف هو اللي يبدأ.</p>
+      <span class="go">افتح الغرف ←</span>
+    </button>
+  </div>
+  <h3 style="margin:26px 0 12px;font-size:19px">📊 بنوك الأسئلة</h3>
+  <div class="stats-strip">
+    <div class="stat"><b id="stChars">—</b><span class="mut small">شخصية «من أنا»</span></div>
+    <div class="stat"><b id="stCrimes">—</b><span class="mut small">لغز «قصة الجريمة»</span></div>
+    <div class="stat"><b id="stMatches">0</b><span class="mut small">مباريات سابقة</span></div>
+    <div class="stat"><b id="stDur">—</b><span class="mut small">وقت لعب إجمالي</span></div>
+  </div>
+</section>
+
+<!-- ══════ ٣) عن قرب: اختيار اللعبة ══════ -->
+<section class="screen" id="s-local">
+  <div class="topbar"><button class="backbtn" onclick="go('s-home')">→</button><h2>🛋️ اللعب عن قُرب</h2></div>
+  <p class="mut small" style="margin-bottom:14px">اختار اللعبة اللي عايزين تلعبوها — إعداداتك هتتحفظ تلقائيًا في السحابة ☁️</p>
+  <button class="gamepick" onclick="Setup.open('manana')">
+    <span class="em">🎭</span>
+    <span><h3>من أنا؟</h3><p class="mut small">القرعة تختار لاعبًا يرى الشخصية سرًّا ويقلّدها قبل انتهاء التايمر.</p>
+    <span class="chip small" style="margin-top:6px"><b id="lp1" style="color:var(--gold)"></b></span></span>
+  </button>
+  <button class="gamepick" onclick="Setup.open('crime')">
+    <span class="em">🕵️</span>
+    <span><h3>قصة الجريمة</h3><p class="mut small">لغز غموض، أدلة تدريجية، والفرقة اللي تحل أولًا تكسب.</p>
+    <span class="chip small" style="margin-top:6px"><b id="lp2" style="color:var(--gold)"></b></span></span>
+  </button>
+</section>
+
+<!-- ══════ ٤) إعداد اللعبة ══════ -->
+<section class="screen" id="s-setup">
+  <div class="topbar"><button class="backbtn" onclick="Setup.back()">→</button>
+    <h2 id="setupTitle">🎭 من أنا؟ — الإعداد</h2></div>
+
+  <div class="card" style="margin-bottom:14px">
+    <h3 style="margin-bottom:12px"><span class="step-num">1</span>المجموعتان واللاعبون</h3>
+    <div class="grid2">
+      <div class="card grp-card" style="--c:var(--amber);margin:0">
+        <h3 style="font-size:16px">🟡 المجموعة الأولى</h3>
+        <input class="input" id="g1Name" value="مجموعة 1" maxlength="20" style="margin:8px 0">
+        <div style="display:flex;gap:8px">
+          <input class="input" id="g1P" placeholder="اسم اللاعب…" maxlength="16" onkeydown="if(event.key==='Enter')Setup.addP(0)">
+          <button class="btn primary sm" onclick="Setup.addP(0)">➕</button>
+        </div>
+        <div id="g1List" style="margin-top:10px"></div>
+      </div>
+      <div class="card grp-card" style="--c:var(--teal);margin:0">
+        <h3 style="font-size:16px">🟢 المجموعة الثانية</h3>
+        <input class="input" id="g2Name" value="مجموعة 2" maxlength="20" style="margin:8px 0">
+        <div style="display:flex;gap:8px">
+          <input class="input" id="g2P" placeholder="اسم اللاعب…" maxlength="16" onkeydown="if(event.key==='Enter')Setup.addP(1)">
+          <button class="btn teal sm" onclick="Setup.addP(1)">➕</button>
+        </div>
+        <div id="g2List" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:14px">
+    <h3 style="margin-bottom:10px"><span class="step-num">2</span>⏱️ وقت الجولة الواحدة</h3>
+    <div class="dur-chips" id="durChips">
+      <button class="btn sm" data-d="30" onclick="Setup.dur=30;Setup.pickDur(this)">٣٠ ثانية</button>
+      <button class="btn sm on" data-d="60" onclick="Setup.dur=60;Setup.pickDur(this)">٦٠ ثانية</button>
+      <button class="btn sm" data-d="90" onclick="Setup.dur=90;Setup.pickDur(this)">٩٠ ثانية</button>
+      <button class="btn sm" data-d="120" onclick="Setup.dur=120;Setup.pickDur(this)">١٢٠ ثانية</button>
+    </div>
+  </div>
+
+  <button class="btn primary big" onclick="Setup.launch()">🚀 ابدأ المباراة</button>
+</section>
+
+<!-- ══════ ٥) عن بُعد: غرف ══════ -->
+<section class="screen" id="s-remote">
+  <div class="topbar"><button class="backbtn" onclick="go('s-home')">→</button><h2>🌐 اللعب عن بُعد</h2></div>
+  <div class="tabs">
+    <button id="tabCreate" class="on" onclick="Room.tab('create')">➕ إنشاء غرفة</button>
+    <button id="tabJoin" onclick="Room.tab('join')">🔑 انضمام</button>
+  </div>
+  <div id="paneCreate" class="card">
+    <p class="mut small" style="margin-bottom:14px">أنشئ غرفة برمز سري وشاركه مع صحابك — <b>أنت هتبقى المضيف</b> اللي يختار اللعبة ويبدأها.</p>
+    <button class="btn teal big" onclick="Room.create()">🎲 إنشاء غرفة جديدة</button>
+  </div>
+  <div id="paneJoin" class="card" style="display:none">
+    <input class="input" id="joinCode" placeholder="رمز الغرفة… مثال: K7Q2M" maxlength="5" style="text-align:center;letter-spacing:6px;font-family:Changa;font-size:22px;text-transform:uppercase">
+    <button class="btn primary big" style="margin-top:12px" onclick="Room.join()">🚪 انضمام</button>
+  </div>
+</section>
+
+<!-- ══════ ٦) ردهة الغرفة ══════ -->
+<section class="screen" id="s-room">
+  <div class="topbar"><button class="backbtn" onclick="Room.leave()">→</button>
+    <h2>🚪 غرفة <span id="roomCodeTitle" style="color:var(--gold)"></span></h2>
+    <span class="chip" style="margin-inline-start:auto"><span class="dot"></span> متصلة</span></div>
+  <div class="card">
+    <p class="mut small">الرمز — شاركه مع اللاعبين:</p>
+    <div class="room-code" id="roomCodeBig" onclick="UI.copy(this.textContent,'تم نسخ الرمز ✅')"></div>
+    <div class="divider"></div>
+    <h4 style="margin-bottom:10px">👥 اللاعبون (<span id="plCount">0</span>)</h4>
+    <div id="playerList"></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h4 style="margin-bottom:10px">💬 دردشة الغرفة</h4>
+    <div class="chat-box" id="chatBox"></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <input class="input" id="chatInput" placeholder="اكتب رسالة…" maxlength="200" onkeydown="if(event.key==='Enter')Room.send()">
+      <button class="btn teal" onclick="Room.send()">إرسال</button>
+    </div>
+  </div>
+
+  <div class="card" id="hostControls" style="margin-top:14px;text-align:center;display:none">
+    <h4 style="margin-bottom:6px">👑 أنت المضيف — اختار اللعبة وابدأها</h4>
+    <p class="mut small" style="margin-bottom:12px">الضيوف هيتابعوا المباراة مباشرة على شاشتهم.</p>
+    <div class="grid2">
+      <button class="btn violet big" onclick="Setup.open('manana')">🎭 من أنا؟</button>
+      <button class="btn coral big" onclick="Setup.open('crime')">🕵️ قصة الجريمة</button>
+    </div>
+  </div>
+
+  <div class="card" id="guestWait" style="margin-top:14px;text-align:center;display:none">
+    <div style="font-size:44px">👑</div>
+    <h4 style="margin:8px 0">المضيف <span id="hostNameDisp" style="color:var(--gold)"></span> هو اللي هيختار اللعبة ويبدأها</h4>
+    <p class="mut small">استنّاه يجهز... 💬 ودردش معاه!</p>
+  </div>
+</section>
+
+<section class="screen" id="s-wait">
+  <div class="topbar"><button class="backbtn" onclick="go('s-room')">→</button><h2>⏳ استنّوا المضيف</h2></div>
+  <div class="card" style="text-align:center;padding:40px 20px">
+    <div style="font-size:60px">👑</div>
+    <h3 style="margin:14px 0 8px">المضيف <span id="waitHost" style="color:var(--gold)"></span> بيجهز المباراة</h3>
+    <p class="chip" id="waitGame" style="font-size:18px;margin:10px 0;display:inline-block"></p>
+    <p class="mut small">استنوا شوية... 💬</p>
+  </div>
+</section>
+
+<section class="screen" id="s-live">
+  <div class="topbar"><h2 style="margin:0 auto">📡 بث مباشر من الغرفة</h2></div>
+  <div style="text-align:center;margin-bottom:12px">
+    <span class="chip" id="liveGame"></span>
+    <span class="chip" id="liveRound"></span>
+  </div>
+  <div class="hud card">
+    <div class="hs" style="--c:var(--amber)"><b id="liveG1Name"></b><span class="sc" id="liveG1Score">0</span></div>
+    <div class="hmid"><span class="turn-chip" id="liveTurn" style="--c:var(--mut)"></span></div>
+    <div class="hs" style="--c:var(--teal)"><b id="liveG2Name"></b><span class="sc" id="liveG2Score">0</span></div>
+  </div>
+  <div class="card" id="liveActorBox" style="text-align:center;display:none;margin-bottom:12px">
+    <p class="mut small">🌟 بيلعب دلوقتي</p>
+    <h3 id="liveActor" style="color:var(--gold);font-size:26px"></h3>
+  </div>
+  <div class="card" id="liveTimerBox" style="text-align:center;display:none;margin-bottom:12px">
+    <p class="mut small">⏱️ الوقت الباقي</p>
+    <div class="live-timer" id="liveTimer">00</div>
+  </div>
+  <div class="card" id="liveSecret" style="text-align:center;display:none;margin-bottom:12px">
+    <div style="font-size:40px">🔒</div>
+    <p style="margin-top:6px">السر عند المضيف — ما ينفعش يتعرض هنا!</p>
+  </div>
+  <div class="card">
+    <p class="mut small">آخر حدث:</p>
+    <p id="liveLast" style="font-weight:700;font-size:16px">المباراة بدأت...</p>
+  </div>
+</section>
+
+<!-- ══════ ٧) شاشة المباراة ══════ -->
+<section class="screen" id="s-match">
+  <div class="hud card">
+    <div class="hs" style="--c:var(--amber)"><b id="hG1"></b><span class="sc" id="hS1">0</span><span class="pm" onclick="Match.nudge(0)">✏️ تعديل</span></div>
+    <div class="hmid">
+      <span class="turn-chip" id="hTurn" style="--c:var(--mut)">جاهزين؟</span>
+      <span class="mut small" id="hRound"></span>
+      <b class="disp" id="hudTime" style="direction:ltr">00:00</b>
+    </div>
+    <div class="hs" style="--c:var(--teal)"><b id="hG2"></b><span class="sc" id="hS2">0</span><span class="pm" onclick="Match.nudge(1)">✏️ تعديل</span></div>
+    <button class="btn coral sm" onclick="Match.end()">🏁 إنهاء</button>
+  </div>
+
+  <div class="card phase" id="ph-gwheel">
+    <h3 style="text-align:center" id="gwheelTitle">🎡 القرعة: مين المجموعة اللي هتبدأ؟</h3>
+    <div class="wheel-wrap"><div class="wheel-pointer">🔻</div><canvas id="cvG" width="680" height="680"></canvas></div>
+    <div class="wheel-res" id="resG"></div>
+    <button class="btn primary big" id="btnG" onclick="Match.spinGroups()">🎲 لفّ العجلة!</button>
+  </div>
+
+  <div class="card phase" id="ph-pwheel" style="display:none">
+    <h3 style="text-align:center" id="pwheelTitle"></h3>
+    <div class="wheel-wrap"><div class="wheel-pointer">🔻</div><canvas id="cvP" width="680" height="680"></canvas></div>
+    <div class="wheel-res" id="resP"></div>
+    <button class="btn primary big" id="btnP" onclick="Match.spinPlayer()">🎲 لفّ العجلة!</button>
+    <div id="playedChips" style="margin-top:12px;text-align:center"></div>
+  </div>
+
+  <div class="card phase" id="ph-reveal" style="display:none;text-align:center">
+    <p class="chip">🎲 القرعة اختارت ممثّل الجولة</p>
+    <h3 style="margin:14px 0 6px">🤫 العرض السرّي</h3>
+    <p class="mut small" style="margin-bottom:16px">سلّم الموبايل لـ <b id="rvActor" style="color:var(--gold)"></b> لوحده — محدش يبص!</p>
+    <button class="secret-hold" id="rvHold"><div class="fill"></div><span>👆 اضغط مطوّلًا لكشف الشخصية</span></button>
+    <div class="secret-view" id="rvSecret" style="display:none">
+      <p class="mut small">شخصيتك هي:</p><div class="big" id="rvChar"></div>
+      <p class="mut small" id="rvCat"></p>
+      <button class="btn primary big" style="margin-top:14px" onclick="Match.act()">🎬 فهمت — يلا نمثّل!</button>
+    </div>
+  </div>
+
+  <div class="card phase" id="ph-act" style="display:none;text-align:center">
+    <p class="chip" id="actChip"></p>
+    <div class="ring-wrap">
+      <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="14"/>
+      <circle id="maRing" cx="100" cy="100" r="88" fill="none" stroke="#ffc233" stroke-width="14" stroke-linecap="round" stroke-dasharray="553"/></svg>
+      <div class="ring-time" id="maTime">60</div>
+    </div>
+    <button class="btn ghost" onclick="Match.skip()">⏭️ تخطّي الشخصية</button>
+  </div>
+
+  <div class="card phase" id="ph-result" style="display:none;text-align:center">
+    <div style="font-size:52px">⏰</div>
+    <h3 style="margin:8px 0">هل المجموعة عرفت الشخصية؟</h3>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+      <button class="btn primary" onclick="Match.score(true)">✅ أيوه! +١٠</button>
+      <button class="btn ghost" onclick="Match.score(false)">😅 لأ</button>
+    </div>
+  </div>
+
+  <div class="card phase" id="ph-story" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <h3 id="stTitle" style="color:var(--coral)"></h3>
+      <span class="chip" id="stChip"></span>
+    </div>
+    <div class="divider"></div>
+    <p class="story-text" id="stBody"></p>
+    <div class="divider"></div>
+    <div id="stClues"></div>
+    <button class="btn sm" id="stClueBtn" onclick="Match.clue()">🔦 اكشف دليلًا</button>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn primary" onclick="Match.crSolved('direct')">🎯 حلينا اللغز! +١٥</button>
+      <button class="secret-hold" id="stHold" style="flex:1;min-width:200px;padding:14px"><div class="fill"></div><span>🔒 اضغط مطوّلًا لعرض الحل <b>سرًّا</b></span></button>
+    </div>
+  </div>
+
+  <div class="card phase" id="ph-crsolve" style="display:none;text-align:center">
+    <h3 style="color:var(--gold)">🗝️ الحل السرّي</h3>
+    <div class="secret-view" style="margin-top:12px"><div class="big" id="crSolText" style="font-size:19px;line-height:1.9"></div></div>
+    <p class="mut small" style="margin:14px 0">هل المجموعة كانت عارفة الحل قبل ما يتكشف؟</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn primary" onclick="Match.crSolved('late')">✅ أيوه +٥</button>
+      <button class="btn ghost" onclick="Match.crSolved('no')">😕 لأ</button>
+    </div>
+  </div>
+
+  <div class="card phase" id="ph-crdone" style="display:none;text-align:center">
+    <div style="font-size:52px">📁</div>
+    <h3 id="crDoneMsg" style="margin:10px 0"></h3>
+    <button class="btn teal big" onclick="Match.next()">▶️ دور المجموعة التانية</button>
+  </div>
+
+  <div class="card phase" id="ph-allplayed" style="display:none;text-align:center">
+    <div style="font-size:52px">🌟</div>
+    <h3 style="margin:10px 0">كل اللاعبين لعبوا!</h3>
+    <p class="mut small" style="margin-bottom:16px">تقدروا تبدؤوا جولة جديدة أو تنهِوا المباراة.</p>
+    <button class="btn primary big" onclick="Match.newCycle()">🔁 جولة جديدة</button>
+    <button class="btn coral big" style="margin-top:10px" onclick="Match.end()">🏁 إنهاء وعرض التقرير</button>
+  </div>
+</section>
+
+<!-- ══════ ٨) التقرير النهائي ══════ -->
+<section class="screen" id="s-report">
+  <div class="topbar"><h2 style="margin:0 auto">🏆 التقرير النهائي</h2></div>
+  <div class="podium" id="podium"></div>
+  <div class="card">
+    <div id="rankList"></div>
+    <div class="divider"></div>
+    <div class="kv"><span>🎮 المباراة</span><b id="rpGame">—</b></div>
+    <div class="kv"><span>⏱️ مدة المباراة</span><b id="rpDur">—</b></div>
+    <div class="kv"><span>🔁 عدد الأدوار</span><b id="rpRounds">0</b></div>
+    <div class="kv"><span>🌟 نجم المباراة</span><b id="rpMvp">—</b></div>
+    <div class="kv" style="border:none"><span>📈 إجمالي النقاط</span><b id="rpTotal">0</b></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+    <button class="btn teal" style="flex:1" onclick="Report.copy()">📋 نسخ التقرير</button>
+    <button class="btn primary" style="flex:1" onclick="Match.replay()">🔁 مباراة جديدة</button>
+    <button class="btn ghost" style="flex:1" onclick="go('s-local')">🎮 لعبة جديدة</button>
+  </div>
+</section>
+
+<!-- ══════ مودالات ══════ -->
+<div class="modal-bg" id="mSettings"><div class="modal">
+  <h3>⚙️ الإعدادات</h3>
+  <label style="display:flex;align-items:center;gap:10px;margin:16px 0;cursor:pointer">
+    <input type="checkbox" id="setSound" style="width:20px;height:20px"> 🔊 الأصوات</label>
+  <button class="btn teal big" id="installBtn2" onclick="PWA.install()" style="display:none;margin-bottom:10px">📲 تثبيت التطبيق</button>
+  <p class="mut small" id="iosHint" style="display:none;margin-bottom:10px">📱 آيفون: زر المشاركة ⎋ ← إضافة إلى الشاشة الرئيسية.</p>
+  <button class="btn coral big" onclick="Auth.out()" style="margin-bottom:10px">⏻ تسجيل الخروج</button>
+  <button class="btn ghost big" onclick="UI.resetData()" style="margin-bottom:10px">🗑️ مسح كل البيانات</button>
+  <button class="btn primary big" onclick="UI.saveSettings()">حفظ</button>
+</div></div>
+
+<div class="modal-bg" id="mChat"><div class="modal">
+  <h3 style="margin-bottom:10px">💬 دردشة الغرفة</h3>
+  <div class="chat-box" id="chatBox2"></div>
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <input class="input" id="chatInput2" placeholder="اكتب رسالة…" maxlength="200" onkeydown="if(event.key==='Enter')Room.send(2)">
+    <button class="btn teal" onclick="Room.send(2)">إرسال</button>
+  </div>
+  <button class="btn ghost big" style="margin-top:10px" onclick="UI.closeModals()">رجوع للعبة</button>
+</div></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+'use strict';
+/* ═══ إعدادات Firebase ═══ */
+const firebaseConfig = {
+  apiKey: "AIzaSyATdruEbgO4V6seCBNYOMwyTTLX60SlUSw",
+  authDomain: "sj-games-227f7.firebaseapp.com",
+  projectId: "sj-games-227f7",
+  storageBucket: "sj-games-227f7.firebasestorage.app",
+  messagingSenderId: "126160489682",
+  appId: "1:126160489682:web:2a8536535541320100710b",
+  measurementId: "G-SQVT2288LY"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+/* ═══ أدوات عامة ═══ */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const arNum=n=>Number(n).toLocaleString('ar-EG');
+const fmtT=ms=>{const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60);
+  return h?`${h}:${String(m%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`:`${String(m).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400)}
+function go(id){$$('.screen').forEach(s=>s.classList.remove('active'));$('#'+id).classList.add('active');window.scrollTo({top:0});Snd.click()}
+const GCOL=['#ffc233','#2dd4bf'];
+
+const Snd={on:true,ctx:null,
+  p(f,d=.09,type='triangle',g=.15){if(!this.on)return;try{this.ctx=this.ctx||new(window.AudioContext||window.webkitAudioContext)();
+    const o=this.ctx.createOscillator(),v=this.ctx.createGain();o.type=type;o.frequency.value=f;
+    v.gain.setValueAtTime(g,this.ctx.currentTime);v.gain.exponentialRampToValueAtTime(.001,this.ctx.currentTime+d);
+    o.connect(v);v.connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+d)}catch(e){}},
+  click(){this.p(620,.06)},success(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.p(f,.14,'triangle',.18),i*90))},
+  lose(){this.p(220,.25,'sawtooth',.1)},tick(){this.p(900,.03,'square',.05)}};
+
+/* ═══ التخزين المحلي (احتياطي للضيوف) ═══ */
+const DB={get:(k,d)=>{try{return JSON.parse(localStorage.getItem('sj_'+k))??d}catch(e){return d}},set:(k,v)=>localStorage.setItem('sj_'+k,JSON.stringify(v))};
+let USER=null;
+let CLOUD_DATA = {setups:{},stats:{matches:0,totalDur:0}};
+
+/* ═══ السحابة: حفظ وتحميل البيانات ═══ */
+const Cloud={
+  uid:null,
+  isGuest:false,
+  unsub:[],
+  async loadUser(uid){
+    this.uid=uid;
+    try{
+      const doc = await db.collection('users').doc(uid).get();
+      if(doc.exists){
+        CLOUD_DATA = doc.data();
+      }else{
+        CLOUD_DATA = {setups:{},stats:{matches:0,totalDur:0}};
+        await db.collection('users').doc(uid).set(CLOUD_DATA);
+      }
+    }catch(e){console.error('load',e)}
+  },
+  async saveSetups(){
+    if(this.isGuest) return;
+    try{
+      await db.collection('users').doc(this.uid).update({setups:CLOUD_DATA.setups});
+    }catch(e){console.error('save',e)}
+  },
+  async saveStats(){
+    if(this.isGuest) return;
+    try{
+      await db.collection('users').doc(this.uid).update({stats:CLOUD_DATA.stats});
+    }catch(e){console.error('stats',e)}
+  },
+  cleanup(){
+    this.unsub.forEach(u=>u&&u());
+    this.unsub=[];
+  }
+};
+
+/* ═══ المصادقة ═══ */
+const Auth={
+  ready:false,
+  init(){
+    auth.onAuthStateChanged(async user=>{
+      this.ready=true;
+      $('#googleBtn').disabled=false;
+      if(user){
+        USER={name:user.displayName||'لاعب',email:user.email,pic:user.photoURL,uid:user.uid,provider:'google'};
+        Cloud.isGuest=false;
+        await Cloud.loadUser(user.uid);
+        this.enter(true);
+      }else{
+        USER=null;
+        Cloud.isGuest=true;
+        $('#loader').classList.add('hide');
+        go('s-auth');
+      }
+    });
+  },
+  async google(){
+    const btn=$('#googleBtn');
+    btn.classList.add('loading');
+    $('#authError').style.display='none';
+    try{
+      await auth.signInWithPopup(provider);
+    }catch(e){
+      btn.classList.remove('loading');
+      const msg={
+        'auth/popup-closed-by-user':'ألغيت تسجيل الدخول',
+        'auth/cancelled-popup-request':'تم إلغاء الطلب',
+        'auth/unauthorized-domain':'⚠️ رابط الموقع غير مضاف في Firebase — أضفه في Authentication → Settings → Authorized domains'
+      }[e.code]||'حدث خطأ: '+e.message;
+      $('#authError').textContent=msg;
+      $('#authError').style.display='block';
+    }
+  },
+  guest(){
+    const n=$('#guestName').value.trim();
+    if(!n)return toast('اكتب اسمك أولًا 😊');
+    USER={name:n,uid:'guest_'+Date.now(),provider:'guest'};
+    Cloud.isGuest=true;
+    CLOUD_DATA={setups:{},stats:{matches:0,totalDur:0}};
+    this.enter(true);
+  },
+  enter(fresh){
+    $('#loader').classList.add('hide');
+    Home.init();
+    go('s-home');
+    if(fresh&&USER.provider==='google'){
+      Snd.success();
+      toast(`أهلًا ${USER.name} 👋 — بياناتك متزامنة مع السحابة ☁️`);
+    }else if(fresh){
+      Snd.success();
+      toast(`أهلًا ${USER.name} 👋 — وضع الضيف (بياناتك لن تُحفظ)`);
+    }
+  },
+  async out(){
+    try{await auth.signOut()}catch(e){}
+    Cloud.cleanup();
+    USER=null;
+    Cloud.isGuest=true;
+    go('s-auth');
+  }
+};
+
+/* ═══ الرئيسية ═══ */
+const Home={init(){
+  $('#uName').textContent=USER.name;$('#heroName').textContent=USER.name.split(' ')[0];
+  $('#uAvBox').innerHTML=USER.pic?`<img src="${USER.pic}" alt="">`:`<span class="av">${USER.name[0]}</span>`;
+  $('#heroDate').textContent=new Date().toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long'});
+  $('#stChars').textContent=arNum(Bank.chars.length);$('#stCrimes').textContent=arNum(Bank.crimes.length);
+  $('#lp1').textContent=arNum(Bank.chars.length)+' شخصية';$('#lp2').textContent=arNum(Bank.crimes.length)+' لغز';
+  $('#stMatches').textContent=arNum(CLOUD_DATA.stats.matches||0);
+  const td=CLOUD_DATA.stats.totalDur||0;$('#stDur').textContent=td?fmtT(td):'—';
+  $('#syncPill').textContent=Cloud.isGuest?'👤 وضع ضيف':'☁️ متصل بالسحابة';
+  $('#syncPill').className='sync-pill '+(Cloud.isGuest?'off':'on');
+}};
+
+/* ═══ بنك الأسئلة ═══ */
+const Bank={chars:[],crimes:[],build(){
+  const R=(n,c)=>this.chars.push({n,c});
+  ['محمد صلاح','ليونيل ميسي','كريستيانو رونالدو','نيمار','مبابي','هالاند','محمد أبو تريكة','محمود الخطيب','حسام حسن','عصام الحضري','تريزيجيه','دييجو مارادونا','بيليه','زين الدين زيدان','ديفيد بيكهام','رونالدينيو','أندريس إنييستا','سيرجيو راموس','فيرجيل فان دايك','كيفين دي بروين','لوكا مودريتش','كريم بنزيما','ليفاندوفسكي','يوسين بولت','مايكل جوردان','ليبرون جيمس','محمد علي كلاي','مايك تايسون','رافائيل نادال','روجر فيدرير','نوفاك ديوكوفيتش','مايكل فيلبس','محمد إيهاب'].forEach(n=>R(n,'⚽ رياضي'));
+  ['عادل إمام','أحمد السقا','كريم عبد العزيز','أحمد عز','محمد هنيدي','محمد رمضان','يوسف الشريف','أمير كرارة','أحمد حلمي','منة شلبي','هند صبري','ياسمين عبد العزيز','نيللي كريم','أحمد فهمي','أكشاي كومار','شاروخان','جاكي شان','بروس لي','مورجان فريمان','ليوناردو دي كابريو','توم هانكس','توم كروز','براد بيت','جوني ديب','روبرت داوني','ويل سميث','ذا روك','أنجلينا جولي','مارلين مونرو','تشارلي شابلن','مستر بين','سكارليت جوهانسون','كريس هيمسوورث','ريان رينولدز','دنزل واشنطن','آل باتشينو','أنتوني هوبكنز'].forEach(n=>R(n,'🎬 ممثل'));
+  ['كليوباترا','توت عنخ آمون','رمسيس الثاني','صلاح الدين الأيوبي','خالد بن الوليد','عمرو بن العاص','محمد علي باشا','جمال عبد الناصر','سعد زغلول','مصطفى كامل','أحمد عرابي','نابليون بونابرت','الإسكندر الأكبر','يوليوس قيصر','الملكة إليزابيث الأولى','أبراهام لينكولن','جورج واشنطن','ونستون تشرشل','المهاتما غاندي','مارتن لوثر كينج','ألبرت أينشتاين','إسحاق نيوتن','ابن سينا','ابن خلدون','الخوارزمي','عباس بن فرناس','ماركو بولو','سقراط','أرسطو','فيثاغورس','ماري كوري','توماس إديسون','نيكولا تسلا'].forEach(n=>R(n,'🏛️ تاريخي'));
+  ['ميكي ماوس','بطوط','جوفي','توم (توم وجيري)','جيري','سبونج بوب','باتريك','شفيق','السيد سلطع','شبن شان','المحقق كونان','جوكو','ناروتو','لوفي','بيكاتشو','آش (بوكيمون)','هالو كيتي','سيمبا','ويني الدبدوب','علاء الدين','الجني الأزرق','باز لايتير','وودي','شريك','الحمار','بوس إن بوتس','رابونزل','إلسا','سندريلا','سنو وايت','السنافر','الكابتن هادوك','أوبليكس','سوبرمان','سبايدرمان','باتمان','جروت'].forEach(n=>R(n,'🎨 كرتون'));
+  const P=['طبيب','شيف','مدرس','ضابط شرطة','طيار','طبيب أسنان','مهندس','صحفي','حلاق','سائق تاكسي','صياد','مزارع','مشعوذ','حارس مرمى','رسام','شاعر','خياط','سباك','كهربائي','رجل إطفاء','رائد فضاء','منقذ شاطئ','جرسون','محامي'],
+  T=['يخاف من الظلام','مهووس بالنظافة','كثير النسيان','يضحك بلا سبب','بخيل جدًا','يتكلم كثيرًا','نعسان دائمًا','خجول جدًا','يؤمن بالحظ','جائع دائمًا','مهووس بالسيلفي','سريع الغضب','شكّاك','رومانسي','كثير التعثر','يغني طوال الوقت','يقلّد الجميع','يخاف من القطط'],
+  M=['في أول يوم عمل له','في أتوبيس مزدحم','في فرح شعبي','في عزومة رمضان','في مستشفى','على مركب يغرق','في المطار','داخل أسانسير معطّل','في مقابلة عمل','في سوق شعبي','في ماتش كرة','في رحلة فضاء','في مكالمة خدمة عملاء','وهو يصوّر صورة عائلية','في لجنة امتحان','وهو يفتتح مطعمه','تائه في بلد غريبة','وهو يشتري ملابس العيد'];
+  for(let i=0;i<880;i++)this.chars.push({n:`${P[i%24]} ${T[(i*7)%18]} ${M[(i*11)%18]}`,c:'🎲 مرتجلة'});
+  const H=[
+    ['القلادة المختفية','في فيلا هانم نوال انطفأت الأنوار دقيقة واحدة، وحين عادت كانت قلادة الألماس قد تبخّرت من العلبة المخملية.','مقص صغير مقطوع الطرف','رائحة عطر ياسمين نفاذة','قفاز حرير واحد فقط','الخادمة اعترفت أنها رأت ابنة الهانم ترتدي القلادة قبل الحفل بدقائق'],
+    ['غرفة مغلقة من الداخل','عُثر على الخزينة فارغة في مكتب مغلق بالمفتاح من الداخل، والنوافذ موصدة بقضبان حديد.','فتحة تهوية صغيرة قرب السقف','حبل مبلول ملفوف حول المروحة','بصمة حذاء حجم ٤٥','المدير المالي النحيف دخل عبر فتحة التهوية مستعينًا بالحبل'],
+    ['قطار منتصف الليل','اختفت حقيبة الدبلوماسي من الكابينة رقم ٧ أثناء عبور القطار النفق المظلم.','تذكرة ممزقة لعربة المطعم','بقعة شاي على ستارة الكابينة ٨','صفارة إنذار لم تعمل','عامل عربة المطعم تسلل عبر النافذة مستغلًا ضجيج النفق'],
+    ['اللوحة المزيفة','استُبدلت لوحة «زهور الليلك» في المعرض بنسخة مقلدة.','فرشاة رسم دقيقة','إيصال شراء أصباغ حديث','خدش في إطار اللوحة','الرسامة المتدربة نسخت اللوحة في وضح النهار'],
+    ['القهوة المُرّة','سقط رجل الأعمال مغشيًا عليه بعد أول رشفة من قهوته في اجتماع مغلق.','مكعبات سكر ذائبة بالكامل','ملعقة فضية سوداء الطرف','منديل عليه أحمر شفاه','سكرتيرته وضعت السم داخل مكعب السكر نفسه'],
+    ['الشاهد الصامت','شاهد وحيد رأى السارق من النافذة لكنه رفض الكلام، واكتفى بالإشارة إلى ساعة الحائط.','عقارب متوقفة على ١٠:٢٥','نظارة معظمة على الطاولة','ستارة محروقة الطرف','الشاهد الأبكم كان يقصد أن السارق هو عامل الساعة'],
+    ['الدعوة المزيفة','وصلت دعوة زفاف ملكية مزيفة إلى القصر، ودخل بها ضيف غريب.','ختم شمعي بلون مختلف','خط أنيق بحبر أزرق','وردة ذابلة في العروة','الصحفي المفلس زوّر الدعوة ليكتب سبقًا صحفيًا'],
+    ['ساعة منتصف الليل','توقفت كل ساعات القصر دفعة واحدة عند الثانية عشرة، واختفى تاج الدوقة.','مفتاح ذهبي صغير','ريشة طائر أسود','غبار على رف المدفأة','ساعاتي البلاط أوقف الساعات ليغطي صوت فتحه المدفأة'],
+    ['الخزينة الفارغة','خزينة البنك المركزي فُتحت بكلمة المرور الصحيحة دون أي أثر اقتحام.','ورقة تقويم ممزقة','كاميرا تدور نحو الحائط','فنجان قهوة بارد','مدير البنك نفسه غيّر كلمة المرور لعيد ميلاد ابنته'],
+    ['الرسالة الممزقة','وصلت رسالة تهديد ممزقة إلى ست قطع.','حبر يسيل من جهة اليمين','ورق معطر برائحة الورد','بصمة إبهام كاملة','كاتبة الروايات البوليسية أرسلتها لنفسها لتسويق روايتها'],
+    ['البصمة الطينية','على سجاد القاعة البيضاء ظهرت بصمة طين واحدة فقط.','مظلة مطوية جافة','حذاء لامع أكثر من اللازم','قطعة طين جاف تحت المكتب','البستاني نظّف حذاءه جيدًا لكنه نسي قطعة الطين'],
+    ['حارس الليل','أُغمي على حارس المتحف ووُجد مربوطًا بكرسيه، وتمثال «الصقر الذهبي» اختفى.','عقدة بحرية متقنة','فنجان شاي بالنعناع','كرسي مقلوب','الحارس نفسه هو السارق؛ ربط نفسه بعقدة لا يستطيع فعلها وحده']];
+  H.forEach(h=>this.crimes.push({t:h[0],s:h[1],c:h.slice(2,5),sol:h[5]}));
+  const CP=['قصر عتيق','متحف المدينة','فندق فخم','قطار قديم','فيلا على البحر','مقر شركة كبرى','مدرسة ثانوية','مقهى وسط البلد','مركب نيلي','مخيم صحراوي','مسرح قبل العرض','مكتبة قديمة','محل مجوهرات','مستشفى ليلًا','طائرة خاصة','مزرعة معزولة','معرض فنون','نادٍ رياضي','قصر مهجور','مستودع على الميناء'],
+  CI=['لوحة فنية شهيرة','عقد من الألماس','كأس ذهبية','وثيقة سرية','ساعة نادرة','تمثال أثري','خزنة البنك','تاج الملكة','كرة موقعة من أسطورة','كمان عتيق','هاتف مليء بالأسرار','زجاجة عطر ملكية','سجادة حرير','مخطوطة نادرة','كاميرا صحفية','خاتم خطوبة','صندوق فضي','خريطة كنز','وصية قديمة','عملة أثرية'],
+  CS=['مدير الفندق','حارس الليل','الطباخ العجوز','الصحفية الشهيرة','الأرملة الثرية','الضيف الإيطالي','عاملة النظافة','الضابط المتقاعد','السائق الخاص','المحامي الشاب','الراقصة المشهورة','المحاسب الدقيق','البواب','السائح الأجنبي','الساحر','الطبيب القديم','الطيار','الصياد','المهندسة','المعلمة'],
+  CC=['خيط حرير أحمر','فنجان قهوة لم يكتمل','أثر قدم مبللة','نظارة مكسورة','رسالة ممزقة','شعرة طويلة','رائحة عطر غريب','تذكرة قديمة','مفتاح ذهبي','ساعة متوقفة على الثالثة','مظلة مبللة','بقعة حبر','قطعة قماش فاخرة','تسجيل هاتفي','ورقة شوكولاتة','سيجار فاخر'],
+  TW=['الجاني أخفى المسروق داخل قالب حلوى','الجاني دخل عبر المدخنة','الجاني درّب قردًا على السرقة','الجاني تنكّر في زي الحارس','الجاني كان مختبئًا داخل الغرفة أصلًا','الجاني نفّذ الجريمة قبل الحفل بيوم كامل','الجاني استبدل المسروق بنسخة مزيفة','الجاني أخفى المسروق داخل المظلة','الجاني ترك بطاقة دعوة مزيفة خلفه','الجاني هرب بقارب صغير','الجاني أخفى المسروق في صندوق كمان','الجاني خطط لكل شيء منذ شهور'];
+  for(let i=0;i<1040;i++){const cl=[CC[(i*5)%16],CC[(i*5+6)%16],CC[(i*5+11)%16]];
+    this.crimes.push({t:`لغز اختفاء ${CI[(i*3+1)%20]}`,
+      s:`في ${CP[i%20]}، وقبل لحظات من ${['حفل الافتتاح','وصول الشرطة','إغلاق الأبواب','بدء المزاد'][i%4]}، اكتشف الجميع أن ${CI[(i*3+1)%20]} قد اختفت تمامًا!`,
+      c:cl,sol:`🎯 الجاني: ${CS[(i*7+2)%20]}\n🔍 الدليل الحاسم: ${cl[0]}\n🤫 السر: ${TW[(i*11)%12]}`})}
+}};
+
+/* ═══ إعداد اللعبة ═══ */
+const Setup={dur:60,p:[[],[]],game:'manana',fromRemote:false,
+  open(game){
+    this.game=game;
+    this.fromRemote = !!Room.ch && Room.host;
+    $('#setupTitle').textContent=(game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة')+' — الإعداد';
+    const s=CLOUD_DATA.setups&&CLOUD_DATA.setups[game];
+    if(s){$('#g1Name').value=s.g1||'مجموعة 1';$('#g2Name').value=s.g2||'مجموعة 2';this.p=s.p||[[],[]];this.dur=s.dur||60;
+      $$('#durChips .btn').forEach(b=>b.classList.toggle('on',+b.dataset.d===this.dur))}
+    else{this.p=[[],[]];this.dur=60;$$('#durChips .btn').forEach(b=>b.classList.toggle('on',+b.dataset.d===60))}
+    this.render();
+    go('s-setup');
+    if(this.fromRemote) Room.ch.postMessage({t:'g-open', game});
+  },
+  back(){ go(this.fromRemote?'s-room':'s-local'); },
+  addP(g){const inp=$('#g'+(g+1)+'P'),v=inp.value.trim();if(!v)return;
+    this.p[g].push(v);inp.value='';inp.focus();this.render();Snd.click();
+    CLOUD_DATA.setups[this.game]={g1:$('#g1Name').value,g2:$('#g2Name').value,p:this.p,dur:this.dur};
+    Cloud.saveSetups()},
+  delP(g,i){this.p[g].splice(i,1);this.render();
+    CLOUD_DATA.setups[this.game]={g1:$('#g1Name').value,g2:$('#g2Name').value,p:this.p,dur:this.dur};
+    Cloud.saveSetups()},
+  pickDur(el){$$('#durChips .btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');
+    CLOUD_DATA.setups[this.game]={g1:$('#g1Name').value,g2:$('#g2Name').value,p:this.p,dur:this.dur};
+    Cloud.saveSetups()},
+  render(){[0,1].forEach(g=>{
+    $('#g'+(g+1)+'List').innerHTML=this.p[g].map((n,i)=>
+      `<span class="pl-chip">${n} <b onclick="Setup.delP(${g},${i})">✕</b></span>`).join('')||'<span class="mut small">لا لاعبين بعد</span>'})},
+  launch(){
+    const g1=$('#g1Name').value.trim()||'مجموعة 1',g2=$('#g2Name').value.trim()||'مجموعة 2';
+    if(!this.p[0].length||!this.p[1].length)return toast('ضيف لاعبًا واحدًا على الأقل في كل مجموعة 😅');
+    CLOUD_DATA.setups[this.game]={g1,g2,p:this.p,dur:this.dur};
+    Cloud.saveSetups();
+    Match.groups=[{name:g1,color:GCOL[0],players:this.p[0].map(n=>({n,played:false})),score:0},
+                  {name:g2,color:GCOL[1],players:this.p[1].map(n=>({n,played:false})),score:0}];
+    Match.dur=this.dur;
+    if(this.fromRemote) Room.ch.postMessage({t:'g-start', data:{game:this.game, g1, g2, dur:this.dur}});
+    Match.start(this.game);
+  }
+};
+
+/* ═══ العجلات ═══ */
+function makeWheel(cvId,resId){const cv=$('#'+cvId),x=cv.getContext('2d');
+  const cols=['#ffc233','#2dd4bf','#ff6b5e','#a78bfa','#39d98a','#ff9d33','#4cc3ff','#f472b6'];
+  return{items:[],rot:Math.random()*6,spinning:false,
+    set(items){this.items=items;this.rot=Math.random()*6.28;$('#'+resId).textContent='';this.draw()},
+    draw(){const r=cv.width/2,n=this.items.length;x.clearRect(0,0,cv.width,cv.width);x.save();x.translate(r,r);
+      for(let i=0;i<n;i++){const a0=this.rot+i*2*Math.PI/n,a1=a0+2*Math.PI/n;
+        x.beginPath();x.moveTo(0,0);x.arc(0,0,r-8,a0,a1);x.closePath();
+        x.fillStyle=cols[i%cols.length];x.fill();x.strokeStyle='#08222c';x.lineWidth=4;x.stroke();
+        x.save();x.rotate(a0+Math.PI/n);x.textAlign='right';x.fillStyle='#0d2530';
+        x.font=`800 ${Math.min(34,340/n+10)}px Changa,Tajawal`;
+        x.fillText(this.items[i].slice(0,13),r-26,9);x.restore()}
+      x.beginPath();x.arc(0,0,r*.17,0,7);x.fillStyle='#0d2c3a';x.fill();x.strokeStyle='#ffc233';x.lineWidth=6;x.stroke();
+      x.fillStyle='#ffc233';x.font='800 40px Changa';x.textAlign='center';x.textBaseline='middle';x.fillText('S&J',0,4);x.restore()},
+    spin(cb){if(this.spinning||this.items.length<1)return;this.spinning=true;Snd.click();
+      const target=this.rot+(5+Math.random()*3)*2*Math.PI+Math.random()*2*Math.PI,t0=performance.now(),dur=3800,from=this.rot;let last=-1;
+      const step=t=>{const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,4);this.rot=from+(target-from)*e;this.draw();
+        const seg=Math.floor(((((-Math.PI/2-this.rot)%(2*Math.PI))+2*Math.PI)%(2*Math.PI))/(2*Math.PI/this.items.length));
+        if(seg!==last){last=seg;Snd.tick()}
+        if(p<1)requestAnimationFrame(step);
+        else{this.spinning=false;const n=this.items.length,
+          idx=Math.floor(((((-Math.PI/2-this.rot)%(2*Math.PI))+2*Math.PI)%(2*Math.PI))/(2*Math.PI/n));
+          $('#'+resId).textContent='🎉 '+this.items[idx];Snd.success();cb(this.items[idx])}};
+      requestAnimationFrame(step)}}}
+const GW=makeWheel('cvG','resG'),PW=makeWheel('cvP','resP');
+
+/* ═══ محرك المباراة ═══ */
+const Match={game:'manana',groups:[],dur:60,turn:0,round:1,actor:null,char:null,case:null,clueN:0,t0:0,tick:null,acts:null,used:new Set(),lastGame:'manana',curPhase:null,actEndAt:0,lastMsg:'',
+  sync(){
+    if(!Room.ch || !Room.host || !this.groups.length) return;
+    Room.ch.postMessage({t:'g-state', s:{
+      phase:this.curPhase,
+      g1:{name:this.groups[0].name, score:this.groups[0].score},
+      g2:{name:this.groups[1].name, score:this.groups[1].score},
+      turn:this.turn, round:this.round,
+      actor:this.actor?this.actor.n:null,
+      actEndAt:this.actEndAt,
+      lastMsg:this.lastMsg
+    }});
+  },
+  start(game){this.game=game;this.lastGame=game;this.t0=Date.now();this.round=1;this.acts={};this.used=new Set();
+    this.groups.forEach(g=>{g.score=0;g.players.forEach(p=>p.played=false)});
+    go('s-match');this.hud();clearInterval(this.tick);
+    this.tick=setInterval(()=>$('#hudTime').textContent=fmtT(Date.now()-this.t0),1000);
+    this.ph('ph-gwheel');GW.set(this.groups.map(g=>g.name))},
+  ph(id){$$('#s-match .phase').forEach(p=>p.style.display='none');$('#'+id).style.display='block';this.curPhase=id;this.sync();},
+  hud(){const[g1,g2]=this.groups;
+    $('#hG1').textContent=g1.name;$('#hG2').textContent=g2.name;
+    $('#hS1').textContent=arNum(g1.score);$('#hS2').textContent=arNum(g2.score);
+    $('#hRound').textContent='الدور '+arNum(this.round);
+    const tc=$('#hTurn');tc.textContent='دور: '+this.groups[this.turn].name;tc.style.setProperty('--c',this.groups[this.turn].color);tc.style.color=this.groups[this.turn].color;tc.style.borderColor=this.groups[this.turn].color},
+  bump(i){const el=i?$('#hS2'):$('#hS1');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')},
+  nudge(i){const g=this.groups[i],v=prompt(`تعديل نقاط «${g.name}» (الحالي ${g.score}):`,g.score);
+    if(v!==null&&!isNaN(+v)){g.score=+v;this.hud();this.bump(i);this.lastMsg=`تعديل نقاط ${g.name}`;this.sync();}},
+  spinGroups(){GW.spin(name=>{this.turn=this.groups.findIndex(g=>g.name===name);
+    $('#btnG').disabled=true;setTimeout(()=>$('#btnG').disabled=false,1200);
+    this.lastMsg=`${name} هتبدأ! 🔥`;
+    toast(`🔥 ${name} هي اللي هتبدأ!`);setTimeout(()=>this.toPlayer(),1100)})},
+  toPlayer(){const g=this.groups[this.turn],rem=g.players.filter(p=>!p.played);
+    if(!rem.length){const o=this.groups[1-this.turn],orem=o.players.filter(p=>!p.played);
+      if(!orem.length){this.lastMsg='كل اللاعبين لعبوا';this.ph('ph-allplayed');return}
+      toast(`كل لاعبين ${g.name} لعبوا — الدور عدّى لـ ${o.name}`);
+      this.turn=1-this.turn;this.round++;this.hud();return this.toPlayer()}
+    this.hud();this.lastMsg=`دور ${g.name}`;this.ph('ph-pwheel');
+    $('#pwheelTitle').textContent=`🎡 مين هيلعب من ${g.name}؟`;
+    $('#playedChips').innerHTML=g.players.filter(p=>p.played).map(p=>`<span class="chip" style="opacity:.6">✔ ${p.n} لعب</span>`).join(' ');
+    PW.set(rem.map(p=>p.n))},
+  spinPlayer(){PW.spin(name=>{this.actor=this.groups[this.turn].players.find(p=>p.n===name);
+    $('#btnP').disabled=true;setTimeout(()=>$('#btnP').disabled=false,1200);
+    this.lastMsg=`${name} هيلعب الجولة دي 🌟`;
+    toast(`🌟 لاعب الجولة: ${name}`);
+    setTimeout(()=>this.game==='manana'?this.prepChar():this.prepCase(),1100)})},
+  prepChar(){let i;do{i=rnd(0,Bank.chars.length-1)}while(this.used.has(i));this.used.add(i);this.char=Bank.chars[i];
+    this.ph('ph-reveal');$('#rvActor').textContent=this.actor.n;
+    $('#rvSecret').style.display='none';$('#rvHold').style.display='block'},
+  revealChar(){$('#rvHold').style.display='none';$('#rvChar').textContent=this.char.n;
+    $('#rvCat').textContent='الفئة: '+this.char.c;$('#rvSecret').style.display='block';Snd.success()},
+  act(){this.ph('ph-act');const g=this.groups[this.turn];
+    $('#actChip').textContent=`🎭 ${this.actor.n} بيمثّل — ${g.name} بتخمّن!`;
+    this.left=this.dur;$('#maTime').textContent=this.left;$('#maRing').style.strokeDashoffset=0;
+    this.actEndAt=Date.now()+this.dur*1000;
+    this.lastMsg=`${this.actor.n} بدأ يمثّل! 🎬`;
+    this.sync();
+    clearInterval(this.actT);
+    this.actT=setInterval(()=>{this.left--;$('#maTime').textContent=Math.max(0,this.left);
+      $('#maRing').style.strokeDashoffset=553*(1-this.left/this.dur);
+      if(this.left<=10&&this.left>0)Snd.tick();
+      if(this.left<=0){clearInterval(this.actT);this.lastMsg='الوقت خلص!';this.ph('ph-result')}},1000)},
+  skip(){clearInterval(this.actT);this.lastMsg='اتخطت الشخصية';this.ph('ph-result')},
+  score(ok){const g=this.groups[this.turn];
+    if(ok){g.score+=10;this.acts[this.actor.n]=(this.acts[this.actor.n]||0)+1;confetti();Snd.success();
+      this.lastMsg=`+10 لـ ${g.name}! 🎉`;toast(`🏅 +١٠ نقاط لـ ${g.name}!`)}
+    else{Snd.lose();this.lastMsg=`${this.actor.n} ما عرفوش 😅`;toast('👏 تحية للاعبنا الشجاع')}
+    this.actor.played=true;this.bump(this.turn);this.hud();this.next()},
+  prepCase(){this.case=pick(Bank.crimes);this.clueN=0;this.ph('ph-story');const g=this.groups[this.turn];
+    $('#stTitle').textContent='📁 '+this.case.t;
+    $('#stChip').textContent=`🕵️ تحقيق: ${g.name} — القائد: ${this.actor.n}`;
+    $('#stBody').textContent=this.case.s;$('#stClues').innerHTML='';
+    $('#stClueBtn').style.display='inline-flex';$('#stClueBtn').textContent='🔦 اكشف دليلًا (٠/٣)';
+    this.lastMsg=`قضية جديدة: ${this.case.t}`;this.sync()},
+  clue(){if(this.clueN>=3)return;$('#stClues').innerHTML+=`<div class="clue-chip">🔍 الدليل ${arNum(++this.clueN)}: ${this.case.c[this.clueN-1]}</div>`;
+    $('#stClueBtn').textContent=`🔦 اكشف دليلًا (${arNum(this.clueN)}/٣)`;
+    if(this.clueN>=3)$('#stClueBtn').style.display='none';Snd.tick()},
+  showSol(){this.ph('ph-crsolve');$('#crSolText').innerHTML=this.case.sol.replace(/\n/g,'<br>');Snd.lose()},
+  crSolved(mode){const g=this.groups[this.turn];
+    const pts=mode==='direct'?15:mode==='late'?5:0;
+    g.score+=pts;this.actor.played=true;
+    if(pts)this.acts[this.actor.n]=(this.acts[this.actor.n]||0)+1;
+    this.bump(this.turn);this.hud();
+    $('#crDoneMsg').textContent=mode==='direct'?`🎯 ${g.name} حلت اللغز قبل كشف الحل! +١٥ نقطة`
+      :mode==='late'?`👍 ${g.name} عرفته بعد كشف الحل — +٥ نقاط`
+      :`القضية اتقفلت… الحظ أوفر لـ ${g.name} المرة الجاية`;
+    this.lastMsg=$('#crDoneMsg').textContent;
+    pts>=15?(confetti(),Snd.success()):pts?Snd.success():Snd.lose();
+    this.ph('ph-crdone')},
+  next(){this.turn=1-this.turn;this.round++;this.hud();
+    this.lastMsg=`الدور دلوقتي: ${this.groups[this.turn].name}`;
+    toast(`🔁 الدور دلوقتي: ${this.groups[this.turn].name}`);this.toPlayer()},
+  newCycle(){this.groups.forEach(g=>g.players.forEach(p=>p.played=false));
+    this.lastMsg='جولة جديدة — الكل يلعب تاني! 🔁';
+    toast('🔁 جولة جديدة — الكل يقدر يلعب تاني!');this.toPlayer()},
+  end(){clearInterval(this.tick);clearInterval(this.actT);
+    const dur=Date.now()-this.t0;
+    CLOUD_DATA.stats.matches=(CLOUD_DATA.stats.matches||0)+1;
+    CLOUD_DATA.stats.totalDur=(CLOUD_DATA.stats.totalDur||0)+dur;
+    Cloud.saveStats();
+    if(Room.ch&&Room.host)Room.ch.postMessage({t:'g-end'});
+    Report.show({groups:this.groups.map(g=>({name:g.name,color:g.color,score:g.score})),
+      dur,rounds:this.round-1,game:this.game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة',
+      mvp:Object.entries(this.acts).sort((a,b)=>b[1]-a[1])[0],
+      total:this.groups.reduce((s,g)=>s+g.score,0)});
+    go('s-report')},
+  replay(){this.start(this.lastGame)}
+};
+
+/* ═══ البث المباشر ═══ */
+const Live={data:null,tick:null,
+  wait(game){
+    $('#waitGame').textContent=game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة';
+    $('#waitHost').textContent=Room.players[0]||'المضيف';
+    go('s-wait');
+  },
+  start(d){
+    this.data=d;
+    $('#liveGame').textContent=d.game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة';
+    go('s-live');
+    this.render({phase:'', g1:{name:d.g1,score:0}, g2:{name:d.g2,score:0}, turn:0, round:1, actor:null, lastMsg:'المباراة بدأت...'});
+  },
+  update(s){
+    this.data={...this.data, ...s};
+    this.render(s);
+  },
+  render(s){
+    $('#liveG1Name').textContent=s.g1.name; $('#liveG1Score').textContent=arNum(s.g1.score);
+    $('#liveG2Name').textContent=s.g2.name; $('#liveG2Score').textContent=arNum(s.g2.score);
+    $('#liveRound').textContent='الدور '+arNum(s.round);
+    $('#liveTurn').textContent='دور: '+(s.turn===0?s.g1.name:s.g2.name);
+    const ab=$('#liveActorBox');
+    if(s.actor){ab.style.display='block';$('#liveActor').textContent=s.actor}
+    else ab.style.display='none';
+    this.renderTimer(s);
+    if(s.lastMsg)$('#liveLast').textContent=s.lastMsg;
+    $('#liveSecret').style.display=(s.phase==='ph-reveal'||s.phase==='ph-crsolve')?'block':'none';
+  },
+  renderTimer(s){
+    clearInterval(this.tick);
+    const box=$('#liveTimerBox');
+    if(s.phase==='ph-act'&&s.actEndAt){
+      box.style.display='block';
+      this.tick=setInterval(()=>{
+        const left=Math.max(0,Math.ceil((s.actEndAt-Date.now())/1000));
+        $('#liveTimer').textContent=String(left).padStart(2,'0');
+        if(left<=0){clearInterval(this.tick);box.style.display='none'}
+      },500);
+    }else box.style.display='none';
+  },
+  end(){
+    $('#liveLast').textContent='🏁 المباراة انتهت!';
+    clearInterval(this.tick);
+    $('#liveTimerBox').style.display='none';
+    $('#liveSecret').style.display='none';
+  }
+};
+
+const Report={data:null,
+  show(d){this.data=d;const r=[...d.groups].sort((a,b)=>b.score-a.score);
+    $('#podium').innerHTML=(r[1]?`<div class="pod p2"><b>${r[1].name}</b><span class="psc">${arNum(r[1].score)}</span></div>`:'')+
+      `<div class="pod p1"><b>${r[0].name} 👑</b><span class="psc">${arNum(r[0].score)}</span></div>`+
+      (r[1]?`<div style="align-self:flex-end" class="mut small">المركز التاني 🥈</div>`:'');
+    $('#rankList').innerHTML=r.map((g,i)=>`<div class="kv"><span>${['🥇','🥈'][i]} ${g.name}</span><b>${arNum(g.score)} نقطة</b></div>`).join('');
+    $('#rpGame').textContent=d.game;$('#rpDur').textContent=fmtT(d.dur);
+    $('#rpRounds').textContent=arNum(d.rounds);
+    $('#rpMvp').textContent=d.mvp?`${d.mvp[0]} (${arNum(d.mvp[1])} فوز)`:'—';
+    $('#rpTotal').textContent=arNum(d.total);
+    Home.init();
+    if(d.total>0)confetti()},
+  copy(){if(!this.data)return;const d=this.data,r=[...d.groups].sort((a,b)=>b.score-a.score);
+    UI.copy(`🏆 تقرير S&J Games\n🎮 ${d.game} | ⏱️ ${fmtT(d.dur)}\n${r.map((g,i)=>`${['🥇','🥈'][i]} ${g.name} — ${g.score} نقطة`).join('\n')}\n🌟 النجم: ${d.mvp?d.mvp[0]:'—'}\n🔁 الأدوار: ${d.rounds}`,'تم نسخ التقرير ✅')}};
+
+/* ═══ الغرف ═══ */
+const Room={code:null,host:false,ch:null,players:[],roomSub:null,
+  tab(t){$('#tabCreate').classList.toggle('on',t==='create');$('#tabJoin').classList.toggle('on',t==='join');
+    $('#paneCreate').style.display=t==='create'?'block':'none';$('#paneJoin').style.display=t==='join'?'block':'none'},
+  create(){this.code=Array.from({length:5},()=>pick('ABCDEFGHJKMNPQRSTUVWXYZ23456789')).join('');
+    this.host=true;this.players=[USER.name];this.open();this.sys(`أنشأ ${USER.name} الغرفة 👑`);
+    this.saveRoom()},
+  join(){const c=$('#joinCode').value.trim().toUpperCase();if(c.length!==5)return toast('الرمز ٥ أحرف');
+    this.code=c;this.host=false;this.open();this.subscribeRoom();
+    this.ch&&this.ch.postMessage({t:'join',name:USER.name});this.sys('جارٍ الانضمام…')},
+  async saveRoom(){
+    try{
+      await db.collection('rooms').doc(this.code).set({
+        host:USER.name,
+        hostId:USER.uid,
+        players:this.players,
+        t:Date.now()
+      });
+    }catch(e){console.error(e)}
+  },
+  subscribeRoom(){
+    if(this.roomSub) this.roomSub();
+    this.roomSub = db.collection('rooms').doc(this.code).onSnapshot(doc=>{
+      if(doc.exists){
+        const d=doc.data();
+        this.players=d.players||[];
+        this.renderPlayers();
+        $('#hostNameDisp').textContent=this.players[0]||'المضيف';
+      }
+    });
+  },
+  open(){go('s-room');$('#roomCodeBig').textContent=this.code;$('#roomCodeTitle').textContent=this.code;
+    $('#chatBox').innerHTML='';$('#chatBox2').innerHTML='';this.renderPlayers();
+    $('#chatFab').style.display='block';
+    $('#hostControls').style.display=this.host?'block':'none';
+    $('#guestWait').style.display=this.host?'none':'block';
+    if(!this.host)$('#hostNameDisp').textContent=this.players[0]||'المضيف';
+    try{this.ch=new BroadcastChannel('sj-room-'+this.code)}catch(e){}
+    if(this.ch)this.ch.onmessage=m=>this.onMsg(m.data)},
+  onMsg(d){
+    if(d.t==='join'){if(this.host){if(!this.players.includes(d.name)){this.players.push(d.name);this.sys(`انضم ${d.name} 🎉`);this.saveRoom()}
+      this.ch.postMessage({t:'roster',players:this.players});this.renderPlayers()}
+    else if(!this.players.includes(USER.name))this.ch.postMessage({t:'join',name:USER.name})}
+    else if(d.t==='roster'&&!this.host){this.players=d.players;this.renderPlayers();$('#hostNameDisp').textContent=this.players[0]||'المضيف'}
+    else if(d.t==='chat')this.msg(d.name,d.text,false)
+    else if(d.t==='leave'){this.players=this.players.filter(p=>p!==d.name);this.sys(`غادر ${d.name}`);this.renderPlayers();if(this.host)this.saveRoom()}
+    else if(d.t==='g-open')Live.wait(d.game)
+    else if(d.t==='g-start')Live.start(d.data)
+    else if(d.t==='g-state')Live.update(d.s)
+    else if(d.t==='g-end')Live.end()},
+  send(box){const i=$('#'+(box===2?'chatInput2':'chatInput')),v=i.value.trim();if(!v)return;i.value='';
+    this.msg(USER.name,v,true);this.ch&&this.ch.postMessage({t:'chat',name:USER.name,text:v});Snd.click()},
+  msg(n,text,me){[$('#chatBox'),$('#chatBox2')].forEach(b=>{if(!b)return;
+    const d=document.createElement('div');d.className='msg '+(me?'me':'them');
+    d.innerHTML=`<b>${n}</b>${text.replace(/</g,'&lt;')}`;b.appendChild(d);b.scrollTop=b.scrollHeight})},
+  sys(t){[$('#chatBox'),$('#chatBox2')].forEach(b=>{if(!b)return;
+    const d=document.createElement('div');d.className='msg sys';d.textContent='— '+t+' —';b.appendChild(d)})},
+  renderPlayers(){$('#plCount').textContent=this.players.length;
+    $('#playerList').innerHTML=this.players.map((p,i)=>`<div class="chip" style="margin:0 0 6px;width:100%;justify-content:flex-start"><span class="dot"></span>${p}${i===0?' 👑':''}</div>`).join('')},
+  leave(){
+    if(this.roomSub){this.roomSub();this.roomSub=null}
+    if(this.host&&this.code){db.collection('rooms').doc(this.code).delete().catch(()=>{})}
+    this.ch&&(this.ch.postMessage({t:'leave',name:USER.name}),this.ch.close());this.ch=null;
+    $('#chatFab').style.display='none';go('s-remote')}};
+
+const UI={copy(t,m){navigator.clipboard?navigator.clipboard.writeText(t).then(()=>toast(m)):toast('انسخ يدويًا')},
+  settings(){$('#setSound').checked=Snd.on;$('#iosHint').style.display=/iphone|ipad/i.test(navigator.userAgent)?'block':'none';this.openModal('mSettings')},
+  saveSettings(){Snd.on=$('#setSound').checked;this.closeModals();toast('تم الحفظ ✅')},
+  resetData(){if(confirm('هيتسح كل حاجة نهائيًا. متأكد؟')){localStorage.clear();location.reload()}},
+  openModal(id){$('#'+id).classList.add('open')},closeModals(){$$('.modal-bg').forEach(m=>m.classList.remove('open'))}};
+$$('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+
+function confetti(){const c=$('#confetti'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#ffc233','#2dd4bf','#ff6b5e','#a78bfa','#39d98a','#fff'],
+  ps=Array.from({length:130},()=>({x:Math.random()*c.width,y:-20-Math.random()*200,vx:(Math.random()-.5)*3,vy:2+Math.random()*4,s:5+Math.random()*7,c:pick(cols),r:Math.random()*6.28}));
+  let f=0;(function a(){x.clearRect(0,0,c.width,c.height);
+    ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=.1;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);x.restore()});
+    if(++f<160)requestAnimationFrame(a);else x.clearRect(0,0,c.width,c.height)})()}
+
+function holdReveal(el,done){let raf=null;const f=el.querySelector('.fill');
+  const stop=()=>{cancelAnimationFrame(raf);f.style.width='0'};
+  el.addEventListener('pointerdown',e=>{e.preventDefault();const t0=performance.now();
+    const step=t=>{const p=Math.min(1,(t-t0)/700);f.style.width=p*100+'%';
+      if(p>=1){stop();done()}else raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)});
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>el.addEventListener(ev,stop))}
+holdReveal($('#rvHold'),()=>Match.revealChar());
+holdReveal($('#stHold'),()=>Match.showSol());
+
+const PWA={deferred:null,
+  icon(size){const c=document.createElement('canvas');c.width=c.height=size;const x=c.getContext('2d');
+    x.beginPath();x.roundRect?x.roundRect(0,0,size,size,size*.2):x.rect(0,0,size,size);
+    x.fillStyle='#0d2c3a';x.fill();x.strokeStyle='#ffc233';x.lineWidth=size*.03;x.stroke();
+    x.fillStyle='#ffc233';x.font=`800 ${size*.3}px Changa,Arial`;x.textAlign='center';x.textBaseline='middle';
+    x.fillText('S&J',size/2,size*.42);x.fillStyle='#2dd4bf';x.font=`800 ${size*.11}px Changa,Arial`;x.fillText('GAMES',size/2,size*.68);
+    return c.toDataURL('image/png')},
+  boot(){const i192=this.icon(192);
+    const al=document.createElement('link');al.rel='apple-touch-icon';al.href=i192;document.head.appendChild(al);
+    const man={name:'S&J Games — بوابة الألعاب التفاعلية',short_name:'S&J Games',
+      start_url:location.href.split('#')[0],scope:'.',display:'standalone',orientation:'portrait',dir:'rtl',lang:'ar',
+      background_color:'#081b24',theme_color:'#0d2c3a',
+      icons:[{src:i192,sizes:'192x192',type:'image/png',purpose:'any'},{src:this.icon(512),sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+    const ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(new Blob([JSON.stringify(man)],{type:'application/json'}));document.head.appendChild(ml);
+    window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();this.deferred=e;
+      $('#installBtn').style.display='inline-flex';$('#installBtn2').style.display='flex'});
+    window.addEventListener('appinstalled',()=>toast('تم تثبيت S&J Games 🎉'))},
+  install(){if(this.deferred){this.deferred.prompt();this.deferred=null}
+    else if(/iphone|ipad/i.test(navigator.userAgent))toast('📱 زر المشاركة ⎋ ← إضافة إلى الشاشة الرئيسية')
+    else toast('افتح قائمة المتصفح ⋮ ← «تثبيت التطبيق»')}};
+
+(function(){const ems=['🎭','🎲','🕵️','🎡','⏱️','🏆','🧩','🃏','🎯','🔍'],f=$('#floaties');
+  for(let i=0;i<12;i++){const s=document.createElement('span');s.textContent=ems[i%ems.length];
+    s.style.cssText=`left:${rnd(2,92)}%;top:${rnd(4,90)}%;font-size:${rnd(30,80)}px;animation-duration:${rnd(9,18)}s;animation-delay:${rnd(0,6)}s`;f.appendChild(s)}})();
+
+Bank.build();PWA.boot();Auth.init();
+</script>
+</body>
+</html>
