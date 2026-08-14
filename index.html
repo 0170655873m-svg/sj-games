@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -32,13 +32,13 @@ input{font-family:inherit}
 #floaties{position:fixed;inset:0;pointer-events:none;z-index:0}
 #floaties span{position:absolute;opacity:.07;animation:floaty ease-in-out infinite alternate}
 @keyframes floaty{from{transform:translateY(-14px) rotate(-6deg)}to{transform:translateY(16px) rotate(7deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 .screen{display:none;position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:18px clamp(14px,3vw,28px) 100px}
 .screen.active{display:block;animation:fadeup .38s cubic-bezier(.2,.8,.3,1)}
 @keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(57,217,138,.5)}50%{box-shadow:0 0 0 9px rgba(57,217,138,0)}}
 @keyframes slidein{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
-@keyframes spin{to{transform:rotate(360deg)}}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;padding:12px 22px;
   border-radius:14px;background:var(--card2);border:1px solid var(--line);color:var(--ink);
   transition:transform .15s,box-shadow .2s,filter .2s;user-select:none}
@@ -171,13 +171,16 @@ input{font-family:inherit}
 #loader.hide{opacity:0;pointer-events:none}
 .loader-spin{width:56px;height:56px;border:5px solid var(--card2);border-top-color:var(--amber);border-radius:50%;animation:spin .9s linear infinite}
 .loader-txt{margin-top:18px;font-weight:700;color:var(--mut);font-size:15px}
+.room-item{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border-radius:16px;border:1px solid var(--line);
+  background:rgba(255,255,255,.04);margin-bottom:8px;cursor:pointer;transition:.2s;text-align:right}
+.room-item:hover{transform:translateY(-2px);background:rgba(45,212,191,.08);border-color:var(--teal)}
 </style>
 </head>
 <body>
 
 <div id="loader">
   <div class="loader-spin"></div>
-  <div class="loader-txt" id="loaderTxt">جاري تحميل البيانات من السحابة...</div>
+  <div class="loader-txt">جاري تحميل بياناتك من السحابة...</div>
 </div>
 
 <div id="floaties"></div>
@@ -194,14 +197,14 @@ input{font-family:inherit}
       <div class="feat-pills">
         <span class="chip">🎭 من أنا — ١٠٢٥ شخصية</span>
         <span class="chip">🕵️ قصة الجريمة — ١٠٥٢ لغز</span>
-        <span class="chip">🎡 قرعة عادلة</span>
+        <span class="chip">🚪 غرف بأسمائك</span>
         <span class="chip">☁️ مزامنة السحابة</span>
         <span class="chip">📱 تطبيق يُثبَّت</span>
       </div>
     </div>
     <div class="card" style="padding:26px">
       <h3 style="font-size:22px;margin-bottom:4px">سجّل دخولك 🚀</h3>
-      <p class="mut small" style="margin-bottom:18px">سجّل بحساب Google — بياناتك هتتحفظ في السحابة، ومن أي تليفون تاني تلاقي كل حاجة معاك ☁️</p>
+      <p class="mut small" style="margin-bottom:18px">سجّل بحساب Google — مجموعاتك وغرفك هتفضل محفوظة ومن أي تليفون تلاقيها ☁️</p>
       <button class="g-btn" id="googleBtn" onclick="Auth.google()" disabled>
         <span class="spinner"></span>
         <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.2C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.4 6.9-17.7z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.9-6.2C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.6l-7.7-6c-2.1 1.4-4.7 2.2-7.5 2.2-6.3 0-11.6-4.1-13.5-9.6l-7.9 6.2C6.5 42.6 14.6 48 24 48z"/></svg>
@@ -219,9 +222,7 @@ input{font-family:inherit}
 <section class="screen" id="s-home">
   <div class="topbar">
     <div class="brand-logo disp" style="font-size:28px">S<span class="amp">&amp;</span>J</div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <span class="sync-pill on" id="syncPill">☁️ متصل بالسحابة</span>
-    </div>
+    <span class="sync-pill on" id="syncPill">☁️ متصل بالسحابة</span>
     <div style="margin-inline-start:auto;display:flex;gap:8px;align-items:center">
       <button class="btn sm ghost" id="installBtn" onclick="PWA.install()" style="display:none">📲 تثبيت</button>
       <div class="userchip"><span id="uAvBox"></span><b id="uName" style="font-size:13px"></b>
@@ -236,12 +237,12 @@ input{font-family:inherit}
   <div class="mode-grid">
     <button class="mode mode-local" onclick="go('s-local')">
       <span class="ic">🛋️</span><h3>اللعب عن قُرب</h3>
-      <p>متجمعين مع بعض؟ اختار اللعبة وابدأ — إعداد الفرق والوقت جواها.</p>
+      <p>متجمعين مع بعض؟ «من أنا» بالمجموعات والقرعة، و«قصة الجريمة» من غير مجموعات.</p>
       <span class="go">اختار اللعبة ←</span>
     </button>
-    <button class="mode mode-remote" onclick="go('s-remote')">
+    <button class="mode mode-remote" onclick="go('s-remote');Room.renderMyRooms()">
       <span class="ic">🌐</span><h3>اللعب عن بُعد</h3>
-      <p>كل واحد على موبايله: غرفة برمز سري، دردشة حية، والمضيف هو اللي يبدأ.</p>
+      <p>اعمل غرفة باسمك ورمزك، وغرفك القديمة بتفضل محفوظة تدخلها بضغطة.</p>
       <span class="go">افتح الغرف ←</span>
     </button>
   </div>
@@ -254,27 +255,26 @@ input{font-family:inherit}
   </div>
 </section>
 
-<!-- ══════ ٣) عن قرب: اختيار اللعبة ══════ -->
+<!-- ══════ ٣) عن قرب ══════ -->
 <section class="screen" id="s-local">
   <div class="topbar"><button class="backbtn" onclick="go('s-home')">→</button><h2>🛋️ اللعب عن قُرب</h2></div>
-  <p class="mut small" style="margin-bottom:14px">اختار اللعبة اللي عايزين تلعبوها — إعداداتك هتتحفظ تلقائيًا في السحابة ☁️</p>
+  <p class="mut small" style="margin-bottom:14px">«من أنا» فيها مجموعتين وقرعة وتايمر — «قصة الجريمة» بتفتح على طول من غير مجموعات.</p>
   <button class="gamepick" onclick="Setup.open('manana')">
     <span class="em">🎭</span>
-    <span><h3>من أنا؟</h3><p class="mut small">القرعة تختار لاعبًا يرى الشخصية سرًّا ويقلّدها قبل انتهاء التايمر.</p>
+    <span><h3>من أنا؟</h3><p class="mut small">مجموعتين + قرعة تختار اللاعب + تايمر — اللاعب يشوف الشخصية سرًّا ويقلّدها.</p>
     <span class="chip small" style="margin-top:6px"><b id="lp1" style="color:var(--gold)"></b></span></span>
   </button>
   <button class="gamepick" onclick="Setup.open('crime')">
     <span class="em">🕵️</span>
-    <span><h3>قصة الجريمة</h3><p class="mut small">لغز غموض، أدلة تدريجية، والفرقة اللي تحل أولًا تكسب.</p>
+    <span><h3>قصة الجريمة</h3><p class="mut small">من غير مجموعات — قضية تفتح على طول، تقرؤوا وتحلوا مع بعض والحل سرّي.</p>
     <span class="chip small" style="margin-top:6px"><b id="lp2" style="color:var(--gold)"></b></span></span>
   </button>
 </section>
 
-<!-- ══════ ٤) إعداد اللعبة ══════ -->
+<!-- ══════ ٤) إعداد «من أنا» ══════ -->
 <section class="screen" id="s-setup">
   <div class="topbar"><button class="backbtn" onclick="Setup.back()">→</button>
     <h2 id="setupTitle">🎭 من أنا؟ — الإعداد</h2></div>
-
   <div class="card" style="margin-bottom:14px">
     <h3 style="margin-bottom:12px"><span class="step-num">1</span>المجموعتان واللاعبون</h3>
     <div class="grid2">
@@ -298,7 +298,6 @@ input{font-family:inherit}
       </div>
     </div>
   </div>
-
   <div class="card" style="margin-bottom:14px">
     <h3 style="margin-bottom:10px"><span class="step-num">2</span>⏱️ وقت الجولة الواحدة</h3>
     <div class="dur-chips" id="durChips">
@@ -308,11 +307,33 @@ input{font-family:inherit}
       <button class="btn sm" data-d="120" onclick="Setup.dur=120;Setup.pickDur(this)">١٢٠ ثانية</button>
     </div>
   </div>
-
   <button class="btn primary big" onclick="Setup.launch()">🚀 ابدأ المباراة</button>
 </section>
 
-<!-- ══════ ٥) عن بُعد: غرف ══════ -->
+<!-- ══════ ٥) قصة الجريمة ══════ -->
+<section class="screen" id="s-crime">
+  <div class="topbar"><button class="backbtn" onclick="Crime.exit()">→</button>
+    <h2>🕵️ القضية #<span id="crNum">١</span></h2>
+    <span class="chip" style="margin-inline-start:auto">✅ تم حل <b id="crSolvedCount">٠</b></span></div>
+  <div class="card">
+    <h3 id="crTitle" style="color:var(--coral)"></h3>
+    <div class="divider"></div>
+    <p class="story-text" id="crBody"></p>
+    <div class="divider"></div>
+    <div id="crClues"></div>
+    <button class="btn sm" id="crClueBtn" onclick="Crime.clue()">🔦 اكشف دليلًا (٠/٣)</button>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap" id="crSolvedArea">
+      <button class="btn primary" onclick="Crime.solvedIt()">🎉 حلينا اللغز!</button>
+      <button class="secret-hold" id="crHold" style="flex:1;min-width:200px;padding:14px"><div class="fill"></div><span>🔒 اضغط مطوّلًا لعرض الحل <b>سرًّا</b></span></button>
+    </div>
+    <div id="crSolArea" style="display:none">
+      <div class="secret-view"><div class="big" id="crSolText" style="font-size:19px;line-height:1.9"></div></div>
+      <button class="btn coral big" style="margin-top:12px" onclick="Crime.next()">🔍 قضية جديدة</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ ٦) عن بُعد ══════ -->
 <section class="screen" id="s-remote">
   <div class="topbar"><button class="backbtn" onclick="go('s-home')">→</button><h2>🌐 اللعب عن بُعد</h2></div>
   <div class="tabs">
@@ -320,19 +341,28 @@ input{font-family:inherit}
     <button id="tabJoin" onclick="Room.tab('join')">🔑 انضمام</button>
   </div>
   <div id="paneCreate" class="card">
-    <p class="mut small" style="margin-bottom:14px">أنشئ غرفة برمز سري وشاركه مع صحابك — <b>أنت هتبقى المضيف</b> اللي يختار اللعبة ويبدأها.</p>
-    <button class="btn teal big" onclick="Room.create()">🎲 إنشاء غرفة جديدة</button>
+    <p class="mut small" style="margin-bottom:12px">سمّي الغرفة واختار رمزها بنفسك — أو سيب الرمز فاضي وهنولّده تلقائي.</p>
+    <input class="input" id="roomName" placeholder="اسم الغرفة… مثال: سهرة الجمعة 🎉" maxlength="24" style="margin-bottom:10px">
+    <input class="input" id="roomCodeInput" placeholder="رمز من اختيارك (اختياري)… مثال: SOHRA" maxlength="8"
+      style="text-align:center;letter-spacing:4px;font-family:Changa;font-size:20px;text-transform:uppercase;margin-bottom:12px">
+    <button class="btn teal big" onclick="Room.create()">🎲 إنشاء الغرفة</button>
   </div>
   <div id="paneJoin" class="card" style="display:none">
-    <input class="input" id="joinCode" placeholder="رمز الغرفة… مثال: K7Q2M" maxlength="5" style="text-align:center;letter-spacing:6px;font-family:Changa;font-size:22px;text-transform:uppercase">
+    <input class="input" id="joinCode" placeholder="رمز الغرفة… مثال: K7Q2M" maxlength="8" style="text-align:center;letter-spacing:6px;font-family:Changa;font-size:22px;text-transform:uppercase">
     <button class="btn primary big" style="margin-top:12px" onclick="Room.join()">🚪 انضمام</button>
+  </div>
+
+  <div class="card" id="myRoomsCard" style="display:none;margin-top:14px">
+    <h4 style="margin-bottom:4px">🕘 غرفك المحفوظة</h4>
+    <p class="mut small" style="margin-bottom:12px">أي غرفة عملتها أو دخلتها بتتحفظ في حسابك — دوس عليها تدخلها على طول، ومن أي جهاز تاني كمان ☁️</p>
+    <div id="myRoomsList"></div>
   </div>
 </section>
 
-<!-- ══════ ٦) ردهة الغرفة ══════ -->
+<!-- ══════ ٧) ردهة الغرفة ══════ -->
 <section class="screen" id="s-room">
   <div class="topbar"><button class="backbtn" onclick="Room.leave()">→</button>
-    <h2>🚪 غرفة <span id="roomCodeTitle" style="color:var(--gold)"></span></h2>
+    <h2>🚪 <span id="roomNameTitle" style="color:var(--teal)"></span> <span id="roomCodeTitle" style="color:var(--gold)"></span></h2>
     <span class="chip" style="margin-inline-start:auto"><span class="dot"></span> متصلة</span></div>
   <div class="card">
     <p class="mut small">الرمز — شاركه مع اللاعبين:</p>
@@ -349,16 +379,14 @@ input{font-family:inherit}
       <button class="btn teal" onclick="Room.send()">إرسال</button>
     </div>
   </div>
-
   <div class="card" id="hostControls" style="margin-top:14px;text-align:center;display:none">
     <h4 style="margin-bottom:6px">👑 أنت المضيف — اختار اللعبة وابدأها</h4>
-    <p class="mut small" style="margin-bottom:12px">الضيوف هيتابعوا المباراة مباشرة على شاشتهم.</p>
+    <p class="mut small" style="margin-bottom:12px">الضيوف هيتابعوا مباشرة على شاشتهم.</p>
     <div class="grid2">
       <button class="btn violet big" onclick="Setup.open('manana')">🎭 من أنا؟</button>
       <button class="btn coral big" onclick="Setup.open('crime')">🕵️ قصة الجريمة</button>
     </div>
   </div>
-
   <div class="card" id="guestWait" style="margin-top:14px;text-align:center;display:none">
     <div style="font-size:44px">👑</div>
     <h4 style="margin:8px 0">المضيف <span id="hostNameDisp" style="color:var(--gold)"></span> هو اللي هيختار اللعبة ويبدأها</h4>
@@ -376,36 +404,49 @@ input{font-family:inherit}
   </div>
 </section>
 
+<!-- ══════ ٨) البث المباشر ══════ -->
 <section class="screen" id="s-live">
   <div class="topbar"><h2 style="margin:0 auto">📡 بث مباشر من الغرفة</h2></div>
   <div style="text-align:center;margin-bottom:12px">
     <span class="chip" id="liveGame"></span>
     <span class="chip" id="liveRound"></span>
   </div>
-  <div class="hud card">
-    <div class="hs" style="--c:var(--amber)"><b id="liveG1Name"></b><span class="sc" id="liveG1Score">0</span></div>
-    <div class="hmid"><span class="turn-chip" id="liveTurn" style="--c:var(--mut)"></span></div>
-    <div class="hs" style="--c:var(--teal)"><b id="liveG2Name"></b><span class="sc" id="liveG2Score">0</span></div>
+  <div id="liveManana">
+    <div class="hud card">
+      <div class="hs" style="--c:var(--amber)"><b id="liveG1Name"></b><span class="sc" id="liveG1Score">0</span></div>
+      <div class="hmid"><span class="turn-chip" id="liveTurn" style="--c:var(--mut)"></span></div>
+      <div class="hs" style="--c:var(--teal)"><b id="liveG2Name"></b><span class="sc" id="liveG2Score">0</span></div>
+    </div>
+    <div class="card" id="liveActorBox" style="text-align:center;display:none;margin-bottom:12px">
+      <p class="mut small">🌟 بيلعب دلوقتي</p>
+      <h3 id="liveActor" style="color:var(--gold);font-size:26px"></h3>
+    </div>
+    <div class="card" id="liveTimerBox" style="text-align:center;display:none;margin-bottom:12px">
+      <p class="mut small">⏱️ الوقت الباقي</p>
+      <div class="live-timer" id="liveTimer">00</div>
+    </div>
+    <div class="card" id="liveSecret" style="text-align:center;display:none;margin-bottom:12px">
+      <div style="font-size:40px">🔒</div>
+      <p style="margin-top:6px">السر عند المضيف — ما ينفعش يتعرض هنا!</p>
+    </div>
+    <div class="card">
+      <p class="mut small">آخر حدث:</p>
+      <p id="liveLast" style="font-weight:700;font-size:16px">المباراة بدأت...</p>
+    </div>
   </div>
-  <div class="card" id="liveActorBox" style="text-align:center;display:none;margin-bottom:12px">
-    <p class="mut small">🌟 بيلعب دلوقتي</p>
-    <h3 id="liveActor" style="color:var(--gold);font-size:26px"></h3>
-  </div>
-  <div class="card" id="liveTimerBox" style="text-align:center;display:none;margin-bottom:12px">
-    <p class="mut small">⏱️ الوقت الباقي</p>
-    <div class="live-timer" id="liveTimer">00</div>
-  </div>
-  <div class="card" id="liveSecret" style="text-align:center;display:none;margin-bottom:12px">
-    <div style="font-size:40px">🔒</div>
-    <p style="margin-top:6px">السر عند المضيف — ما ينفعش يتعرض هنا!</p>
-  </div>
-  <div class="card">
-    <p class="mut small">آخر حدث:</p>
-    <p id="liveLast" style="font-weight:700;font-size:16px">المباراة بدأت...</p>
+  <div id="liveCrime" style="display:none">
+    <div class="card">
+      <h3 id="liveCrTitle" style="color:var(--coral)"></h3>
+      <div class="divider"></div>
+      <p class="story-text" id="liveCrBody"></p>
+      <div class="divider"></div>
+      <div id="liveCrClues"></div>
+      <p class="mut small" id="liveCrInfo"></p>
+    </div>
   </div>
 </section>
 
-<!-- ══════ ٧) شاشة المباراة ══════ -->
+<!-- ══════ ٩) مباراة «من أنا» ══════ -->
 <section class="screen" id="s-match">
   <div class="hud card">
     <div class="hs" style="--c:var(--amber)"><b id="hG1"></b><span class="sc" id="hS1">0</span><span class="pm" onclick="Match.nudge(0)">✏️ تعديل</span></div>
@@ -417,14 +458,12 @@ input{font-family:inherit}
     <div class="hs" style="--c:var(--teal)"><b id="hG2"></b><span class="sc" id="hS2">0</span><span class="pm" onclick="Match.nudge(1)">✏️ تعديل</span></div>
     <button class="btn coral sm" onclick="Match.end()">🏁 إنهاء</button>
   </div>
-
   <div class="card phase" id="ph-gwheel">
-    <h3 style="text-align:center" id="gwheelTitle">🎡 القرعة: مين المجموعة اللي هتبدأ؟</h3>
+    <h3 style="text-align:center">🎡 القرعة: مين المجموعة اللي هتبدأ؟</h3>
     <div class="wheel-wrap"><div class="wheel-pointer">🔻</div><canvas id="cvG" width="680" height="680"></canvas></div>
     <div class="wheel-res" id="resG"></div>
     <button class="btn primary big" id="btnG" onclick="Match.spinGroups()">🎲 لفّ العجلة!</button>
   </div>
-
   <div class="card phase" id="ph-pwheel" style="display:none">
     <h3 style="text-align:center" id="pwheelTitle"></h3>
     <div class="wheel-wrap"><div class="wheel-pointer">🔻</div><canvas id="cvP" width="680" height="680"></canvas></div>
@@ -432,7 +471,6 @@ input{font-family:inherit}
     <button class="btn primary big" id="btnP" onclick="Match.spinPlayer()">🎲 لفّ العجلة!</button>
     <div id="playedChips" style="margin-top:12px;text-align:center"></div>
   </div>
-
   <div class="card phase" id="ph-reveal" style="display:none;text-align:center">
     <p class="chip">🎲 القرعة اختارت ممثّل الجولة</p>
     <h3 style="margin:14px 0 6px">🤫 العرض السرّي</h3>
@@ -444,7 +482,6 @@ input{font-family:inherit}
       <button class="btn primary big" style="margin-top:14px" onclick="Match.act()">🎬 فهمت — يلا نمثّل!</button>
     </div>
   </div>
-
   <div class="card phase" id="ph-act" style="display:none;text-align:center">
     <p class="chip" id="actChip"></p>
     <div class="ring-wrap">
@@ -454,7 +491,6 @@ input{font-family:inherit}
     </div>
     <button class="btn ghost" onclick="Match.skip()">⏭️ تخطّي الشخصية</button>
   </div>
-
   <div class="card phase" id="ph-result" style="display:none;text-align:center">
     <div style="font-size:52px">⏰</div>
     <h3 style="margin:8px 0">هل المجموعة عرفت الشخصية؟</h3>
@@ -463,39 +499,6 @@ input{font-family:inherit}
       <button class="btn ghost" onclick="Match.score(false)">😅 لأ</button>
     </div>
   </div>
-
-  <div class="card phase" id="ph-story" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-      <h3 id="stTitle" style="color:var(--coral)"></h3>
-      <span class="chip" id="stChip"></span>
-    </div>
-    <div class="divider"></div>
-    <p class="story-text" id="stBody"></p>
-    <div class="divider"></div>
-    <div id="stClues"></div>
-    <button class="btn sm" id="stClueBtn" onclick="Match.clue()">🔦 اكشف دليلًا</button>
-    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-      <button class="btn primary" onclick="Match.crSolved('direct')">🎯 حلينا اللغز! +١٥</button>
-      <button class="secret-hold" id="stHold" style="flex:1;min-width:200px;padding:14px"><div class="fill"></div><span>🔒 اضغط مطوّلًا لعرض الحل <b>سرًّا</b></span></button>
-    </div>
-  </div>
-
-  <div class="card phase" id="ph-crsolve" style="display:none;text-align:center">
-    <h3 style="color:var(--gold)">🗝️ الحل السرّي</h3>
-    <div class="secret-view" style="margin-top:12px"><div class="big" id="crSolText" style="font-size:19px;line-height:1.9"></div></div>
-    <p class="mut small" style="margin:14px 0">هل المجموعة كانت عارفة الحل قبل ما يتكشف؟</p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <button class="btn primary" onclick="Match.crSolved('late')">✅ أيوه +٥</button>
-      <button class="btn ghost" onclick="Match.crSolved('no')">😕 لأ</button>
-    </div>
-  </div>
-
-  <div class="card phase" id="ph-crdone" style="display:none;text-align:center">
-    <div style="font-size:52px">📁</div>
-    <h3 id="crDoneMsg" style="margin:10px 0"></h3>
-    <button class="btn teal big" onclick="Match.next()">▶️ دور المجموعة التانية</button>
-  </div>
-
   <div class="card phase" id="ph-allplayed" style="display:none;text-align:center">
     <div style="font-size:52px">🌟</div>
     <h3 style="margin:10px 0">كل اللاعبين لعبوا!</h3>
@@ -505,7 +508,7 @@ input{font-family:inherit}
   </div>
 </section>
 
-<!-- ══════ ٨) التقرير النهائي ══════ -->
+<!-- ══════ ١٠) التقرير ══════ -->
 <section class="screen" id="s-report">
   <div class="topbar"><h2 style="margin:0 auto">🏆 التقرير النهائي</h2></div>
   <div class="podium" id="podium"></div>
@@ -547,14 +550,12 @@ input{font-family:inherit}
   <button class="btn ghost big" style="margin-top:10px" onclick="UI.closeModals()">رجوع للعبة</button>
 </div></div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
 'use strict';
-/* ═══ إعدادات Firebase ═══ */
 const firebaseConfig = {
   apiKey: "AIzaSyATdruEbgO4V6seCBNYOMwyTTLX60SlUSw",
   authDomain: "sj-games-227f7.firebaseapp.com",
@@ -569,11 +570,11 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const provider = new firebase.auth.GoogleAuthProvider();
 
-/* ═══ أدوات عامة ═══ */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const arNum=n=>Number(n).toLocaleString('ar-EG');
+const esc=s=>String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const fmtT=ms=>{const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60);
   return h?`${h}:${String(m%60).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`:`${String(m).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`};
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400)}
@@ -588,113 +589,51 @@ const Snd={on:true,ctx:null,
   click(){this.p(620,.06)},success(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.p(f,.14,'triangle',.18),i*90))},
   lose(){this.p(220,.25,'sawtooth',.1)},tick(){this.p(900,.03,'square',.05)}};
 
-/* ═══ التخزين المحلي (احتياطي للضيوف) ═══ */
-const DB={get:(k,d)=>{try{return JSON.parse(localStorage.getItem('sj_'+k))??d}catch(e){return d}},set:(k,v)=>localStorage.setItem('sj_'+k,JSON.stringify(v))};
 let USER=null;
-let CLOUD_DATA = {setups:{},stats:{matches:0,totalDur:0}};
+let CLOUD_DATA={setups:{},stats:{matches:0,totalDur:0},rooms:[]};
 
-/* ═══ السحابة: حفظ وتحميل البيانات ═══ */
+/* ═══ السحابة ═══ */
 const Cloud={
-  uid:null,
-  isGuest:false,
-  unsub:[],
-  async loadUser(uid){
-    this.uid=uid;
-    try{
-      const doc = await db.collection('users').doc(uid).get();
-      if(doc.exists){
-        CLOUD_DATA = doc.data();
-      }else{
-        CLOUD_DATA = {setups:{},stats:{matches:0,totalDur:0}};
-        await db.collection('users').doc(uid).set(CLOUD_DATA);
-      }
-    }catch(e){console.error('load',e)}
-  },
-  async saveSetups(){
-    if(this.isGuest) return;
-    try{
-      await db.collection('users').doc(this.uid).update({setups:CLOUD_DATA.setups});
-    }catch(e){console.error('save',e)}
-  },
-  async saveStats(){
-    if(this.isGuest) return;
-    try{
-      await db.collection('users').doc(this.uid).update({stats:CLOUD_DATA.stats});
-    }catch(e){console.error('stats',e)}
-  },
-  cleanup(){
-    this.unsub.forEach(u=>u&&u());
-    this.unsub=[];
-  }
+  uid:null,isGuest:false,
+  async loadUser(uid){this.uid=uid;
+    try{const doc=await db.collection('users').doc(uid).get();
+      if(doc.exists){CLOUD_DATA=Object.assign({setups:{},stats:{matches:0,totalDur:0},rooms:[]},doc.data())}
+      else{await db.collection('users').doc(uid).set(CLOUD_DATA)}}
+    catch(e){console.error(e)}},
+  async saveSetups(){if(this.isGuest)return;try{await db.collection('users').doc(this.uid).update({setups:CLOUD_DATA.setups})}catch(e){}},
+  async saveStats(){if(this.isGuest)return;try{await db.collection('users').doc(this.uid).update({stats:CLOUD_DATA.stats})}catch(e){}},
+  addRoom(entry){if(this.isGuest)return;
+    const list=CLOUD_DATA.rooms||(CLOUD_DATA.rooms=[]);
+    const i=list.findIndex(r=>r.code===entry.code);
+    if(i>=0)list.splice(i,1);
+    list.unshift(entry);
+    if(list.length>10)list.pop();
+    this.saveRooms();Room.renderMyRooms()},
+  async saveRooms(){if(this.isGuest)return;try{await db.collection('users').doc(this.uid).update({rooms:CLOUD_DATA.rooms||[]})}catch(e){}}
 };
 
 /* ═══ المصادقة ═══ */
 const Auth={
-  ready:false,
-  init(){
-    auth.onAuthStateChanged(async user=>{
-      this.ready=true;
-      $('#googleBtn').disabled=false;
-      if(user){
-        USER={name:user.displayName||'لاعب',email:user.email,pic:user.photoURL,uid:user.uid,provider:'google'};
-        Cloud.isGuest=false;
-        await Cloud.loadUser(user.uid);
-        this.enter(true);
-      }else{
-        USER=null;
-        Cloud.isGuest=true;
-        $('#loader').classList.add('hide');
-        go('s-auth');
-      }
-    });
-  },
-  async google(){
-    const btn=$('#googleBtn');
-    btn.classList.add('loading');
-    $('#authError').style.display='none';
-    try{
-      await auth.signInWithPopup(provider);
-    }catch(e){
-      btn.classList.remove('loading');
-      const msg={
-        'auth/popup-closed-by-user':'ألغيت تسجيل الدخول',
-        'auth/cancelled-popup-request':'تم إلغاء الطلب',
-        'auth/unauthorized-domain':'⚠️ رابط الموقع غير مضاف في Firebase — أضفه في Authentication → Settings → Authorized domains'
-      }[e.code]||'حدث خطأ: '+e.message;
-      $('#authError').textContent=msg;
-      $('#authError').style.display='block';
-    }
-  },
-  guest(){
-    const n=$('#guestName').value.trim();
-    if(!n)return toast('اكتب اسمك أولًا 😊');
-    USER={name:n,uid:'guest_'+Date.now(),provider:'guest'};
-    Cloud.isGuest=true;
-    CLOUD_DATA={setups:{},stats:{matches:0,totalDur:0}};
-    this.enter(true);
-  },
-  enter(fresh){
-    $('#loader').classList.add('hide');
-    Home.init();
-    go('s-home');
-    if(fresh&&USER.provider==='google'){
-      Snd.success();
-      toast(`أهلًا ${USER.name} 👋 — بياناتك متزامنة مع السحابة ☁️`);
-    }else if(fresh){
-      Snd.success();
-      toast(`أهلًا ${USER.name} 👋 — وضع الضيف (بياناتك لن تُحفظ)`);
-    }
-  },
-  async out(){
-    try{await auth.signOut()}catch(e){}
-    Cloud.cleanup();
-    USER=null;
-    Cloud.isGuest=true;
-    go('s-auth');
-  }
+  init(){auth.onAuthStateChanged(async user=>{
+    $('#googleBtn').disabled=false;
+    if(user){USER={name:user.displayName||'لاعب',email:user.email,pic:user.photoURL,uid:user.uid,provider:'google'};
+      Cloud.isGuest=false;await Cloud.loadUser(user.uid);this.enter(true)}
+    else{USER=null;Cloud.isGuest=true;$('#loader').classList.add('hide');go('s-auth')}})},
+  async google(){const btn=$('#googleBtn');btn.classList.add('loading');$('#authError').style.display='none';
+    try{await auth.signInWithPopup(provider)}
+    catch(e){btn.classList.remove('loading');
+      const msg={'auth/popup-closed-by-user':'ألغيت تسجيل الدخول','auth/cancelled-popup-request':'تم إلغاء الطلب',
+        'auth/unauthorized-domain':'⚠️ رابط الموقع غير مضاف في Firebase — Authentication → Settings → Authorized domains'}[e.code]||'حدث خطأ: '+e.message;
+      $('#authError').textContent=msg;$('#authError').style.display='block'}},
+  guest(){const n=$('#guestName').value.trim();if(!n)return toast('اكتب اسمك أولًا 😊');
+    USER={name:n,uid:'guest_'+Date.now(),provider:'guest'};Cloud.isGuest=true;
+    CLOUD_DATA={setups:{},stats:{matches:0,totalDur:0},rooms:[]};this.enter(true)},
+  enter(fresh){$('#loader').classList.add('hide');Home.init();go('s-home');
+    if(fresh&&USER.provider==='google'){Snd.success();toast(`أهلًا ${USER.name} 👋 — بياناتك متزامنة ☁️`)}
+    else if(fresh){Snd.success();toast(`أهلًا ${USER.name} 👋 — وضع الضيف`)}},
+  async out(){try{await auth.signOut()}catch(e){}USER=null;Cloud.isGuest=true;go('s-auth')}
 };
 
-/* ═══ الرئيسية ═══ */
 const Home={init(){
   $('#uName').textContent=USER.name;$('#heroName').textContent=USER.name.split(' ')[0];
   $('#uAvBox').innerHTML=USER.pic?`<img src="${USER.pic}" alt="">`:`<span class="av">${USER.name[0]}</span>`;
@@ -704,8 +643,7 @@ const Home={init(){
   $('#stMatches').textContent=arNum(CLOUD_DATA.stats.matches||0);
   const td=CLOUD_DATA.stats.totalDur||0;$('#stDur').textContent=td?fmtT(td):'—';
   $('#syncPill').textContent=Cloud.isGuest?'👤 وضع ضيف':'☁️ متصل بالسحابة';
-  $('#syncPill').className='sync-pill '+(Cloud.isGuest?'off':'on');
-}};
+  $('#syncPill').className='sync-pill '+(Cloud.isGuest?'off':'on')}};
 
 /* ═══ بنك الأسئلة ═══ */
 const Bank={chars:[],crimes:[],build(){
@@ -743,46 +681,62 @@ const Bank={chars:[],crimes:[],build(){
       c:cl,sol:`🎯 الجاني: ${CS[(i*7+2)%20]}\n🔍 الدليل الحاسم: ${cl[0]}\n🤫 السر: ${TW[(i*11)%12]}`})}
 }};
 
-/* ═══ إعداد اللعبة ═══ */
+/* ═══ إعداد «من أنا» ═══ */
 const Setup={dur:60,p:[[],[]],game:'manana',fromRemote:false,
-  open(game){
-    this.game=game;
-    this.fromRemote = !!Room.ch && Room.host;
-    $('#setupTitle').textContent=(game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة')+' — الإعداد';
+  open(game){this.game=game;this.fromRemote=!!Room.ch&&Room.host;
+    if(game==='crime'){Crime.fromRemote=this.fromRemote;Crime.start();return}
+    $('#setupTitle').textContent='🎭 من أنا؟ — الإعداد';
     const s=CLOUD_DATA.setups&&CLOUD_DATA.setups[game];
     if(s){$('#g1Name').value=s.g1||'مجموعة 1';$('#g2Name').value=s.g2||'مجموعة 2';this.p=s.p||[[],[]];this.dur=s.dur||60;
       $$('#durChips .btn').forEach(b=>b.classList.toggle('on',+b.dataset.d===this.dur))}
     else{this.p=[[],[]];this.dur=60;$$('#durChips .btn').forEach(b=>b.classList.toggle('on',+b.dataset.d===60))}
-    this.render();
-    go('s-setup');
-    if(this.fromRemote) Room.ch.postMessage({t:'g-open', game});
-  },
-  back(){ go(this.fromRemote?'s-room':'s-local'); },
+    this.render();go('s-setup');
+    if(this.fromRemote)Room.ch.postMessage({t:'g-open',game})},
+  back(){go(this.fromRemote?'s-room':'s-local')},
   addP(g){const inp=$('#g'+(g+1)+'P'),v=inp.value.trim();if(!v)return;
-    this.p[g].push(v);inp.value='';inp.focus();this.render();Snd.click();
-    CLOUD_DATA.setups[this.game]={g1:$('#g1Name').value,g2:$('#g2Name').value,p:this.p,dur:this.dur};
-    Cloud.saveSetups()},
-  delP(g,i){this.p[g].splice(i,1);this.render();
-    CLOUD_DATA.setups[this.game]={g1:$('#g1Name').value,g2:$('#g2Name').value,p:this.p,dur:this.dur};
-    Cloud.saveSetups()},
-  pickDur(el){$$('#durChips .btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');
-    CLOUD_DATA.setups[this.game]={g1:$('#g1Name').value,g2:$('#g2Name').value,p:this.p,dur:this.dur};
-    Cloud.saveSetups()},
+    this.p[g].push(v);inp.value='';inp.focus();this.render();Snd.click();this.saveCloud()},
+  delP(g,i){this.p[g].splice(i,1);this.render();this.saveCloud()},
+  pickDur(el){$$('#durChips .btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');this.saveCloud()},
+  saveCloud(){CLOUD_DATA.setups[this.game]={g1:$('#g1Name').value,g2:$('#g2Name').value,p:this.p,dur:this.dur};Cloud.saveSetups()},
   render(){[0,1].forEach(g=>{
     $('#g'+(g+1)+'List').innerHTML=this.p[g].map((n,i)=>
-      `<span class="pl-chip">${n} <b onclick="Setup.delP(${g},${i})">✕</b></span>`).join('')||'<span class="mut small">لا لاعبين بعد</span>'})},
-  launch(){
-    const g1=$('#g1Name').value.trim()||'مجموعة 1',g2=$('#g2Name').value.trim()||'مجموعة 2';
+      `<span class="pl-chip">${esc(n)} <b onclick="Setup.delP(${g},${i})">✕</b></span>`).join('')||'<span class="mut small">لا لاعبين بعد</span>'})},
+  launch(){const g1=$('#g1Name').value.trim()||'مجموعة 1',g2=$('#g2Name').value.trim()||'مجموعة 2';
     if(!this.p[0].length||!this.p[1].length)return toast('ضيف لاعبًا واحدًا على الأقل في كل مجموعة 😅');
-    CLOUD_DATA.setups[this.game]={g1,g2,p:this.p,dur:this.dur};
-    Cloud.saveSetups();
+    CLOUD_DATA.setups[this.game]={g1,g2,p:this.p,dur:this.dur};Cloud.saveSetups();
     Match.groups=[{name:g1,color:GCOL[0],players:this.p[0].map(n=>({n,played:false})),score:0},
                   {name:g2,color:GCOL[1],players:this.p[1].map(n=>({n,played:false})),score:0}];
     Match.dur=this.dur;
-    if(this.fromRemote) Room.ch.postMessage({t:'g-start', data:{game:this.game, g1, g2, dur:this.dur}});
-    Match.start(this.game);
-  }
+    if(this.fromRemote)Room.ch.postMessage({t:'g-start',data:{game:this.game,g1,g2,dur:this.dur}});
+    Match.start()}
 };
+
+/* ═══ قصة الجريمة ═══ */
+const Crime={n:0,solved:0,case:null,clueN:0,fromRemote:false,
+  start(){this.next()},
+  next(){this.case=pick(Bank.crimes);this.clueN=0;this.n++;
+    $('#crNum').textContent=arNum(this.n);
+    $('#crTitle').textContent='📁 '+this.case.t;
+    $('#crBody').textContent=this.case.s;
+    $('#crClues').innerHTML='';
+    $('#crClueBtn').style.display='inline-flex';
+    $('#crClueBtn').textContent='🔦 اكشف دليلًا (٠/٣)';
+    $('#crSolvedArea').style.display='flex';
+    $('#crSolArea').style.display='none';
+    go('s-crime');Snd.click();this.broadcast()},
+  clue(){if(this.clueN>=3)return;
+    $('#crClues').innerHTML+=`<div class="clue-chip">🔍 الدليل ${arNum(++this.clueN)}: ${this.case.c[this.clueN-1]}</div>`;
+    $('#crClueBtn').textContent=`🔦 اكشف دليلًا (${arNum(this.clueN)}/٣)`;
+    if(this.clueN>=3)$('#crClueBtn').style.display='none';
+    Snd.tick();this.broadcast()},
+  solvedIt(){this.solved++;confetti();Snd.success();this.showSol(true)},
+  showSol(fromSolve){$('#crSolText').innerHTML=this.case.sol.replace(/\n/g,'<br>');
+    $('#crSolvedArea').style.display='none';$('#crSolArea').style.display='block';
+    $('#crSolvedCount').textContent=arNum(this.solved);
+    if(!fromSolve)Snd.lose();this.broadcast()},
+  broadcast(){if(Room.ch&&Room.host)Room.ch.postMessage({t:'g-crime',s:{
+    num:this.n,title:this.case.t,body:this.case.s,clues:this.case.c.slice(0,this.clueN),solved:this.solved}})},
+  exit(){if(this.fromRemote){Room.ch.postMessage({t:'g-crime-end'});go('s-room')}else go('s-local')}};
 
 /* ═══ العجلات ═══ */
 function makeWheel(cvId,resId){const cv=$('#'+cvId),x=cv.getContext('2d');
@@ -810,38 +764,30 @@ function makeWheel(cvId,resId){const cv=$('#'+cvId),x=cv.getContext('2d');
       requestAnimationFrame(step)}}}
 const GW=makeWheel('cvG','resG'),PW=makeWheel('cvP','resP');
 
-/* ═══ محرك المباراة ═══ */
-const Match={game:'manana',groups:[],dur:60,turn:0,round:1,actor:null,char:null,case:null,clueN:0,t0:0,tick:null,acts:null,used:new Set(),lastGame:'manana',curPhase:null,actEndAt:0,lastMsg:'',
-  sync(){
-    if(!Room.ch || !Room.host || !this.groups.length) return;
-    Room.ch.postMessage({t:'g-state', s:{
-      phase:this.curPhase,
-      g1:{name:this.groups[0].name, score:this.groups[0].score},
-      g2:{name:this.groups[1].name, score:this.groups[1].score},
-      turn:this.turn, round:this.round,
-      actor:this.actor?this.actor.n:null,
-      actEndAt:this.actEndAt,
-      lastMsg:this.lastMsg
-    }});
-  },
-  start(game){this.game=game;this.lastGame=game;this.t0=Date.now();this.round=1;this.acts={};this.used=new Set();
+/* ═══ محرك «من أنا» ═══ */
+const Match={groups:[],dur:60,turn:0,round:1,actor:null,char:null,t0:0,tick:null,acts:null,used:new Set(),curPhase:null,actEndAt:0,lastMsg:'',
+  sync(){if(!Room.ch||!Room.host||!this.groups.length)return;
+    Room.ch.postMessage({t:'g-state',s:{phase:this.curPhase,
+      g1:{name:this.groups[0].name,score:this.groups[0].score},
+      g2:{name:this.groups[1].name,score:this.groups[1].score},
+      turn:this.turn,round:this.round,actor:this.actor?this.actor.n:null,
+      actEndAt:this.actEndAt,lastMsg:this.lastMsg}})},
+  start(){this.t0=Date.now();this.round=1;this.acts={};this.used=new Set();
     this.groups.forEach(g=>{g.score=0;g.players.forEach(p=>p.played=false)});
     go('s-match');this.hud();clearInterval(this.tick);
     this.tick=setInterval(()=>$('#hudTime').textContent=fmtT(Date.now()-this.t0),1000);
     this.ph('ph-gwheel');GW.set(this.groups.map(g=>g.name))},
-  ph(id){$$('#s-match .phase').forEach(p=>p.style.display='none');$('#'+id).style.display='block';this.curPhase=id;this.sync();},
+  ph(id){$$('#s-match .phase').forEach(p=>p.style.display='none');$('#'+id).style.display='block';this.curPhase=id;this.sync()},
   hud(){const[g1,g2]=this.groups;
     $('#hG1').textContent=g1.name;$('#hG2').textContent=g2.name;
     $('#hS1').textContent=arNum(g1.score);$('#hS2').textContent=arNum(g2.score);
     $('#hRound').textContent='الدور '+arNum(this.round);
-    const tc=$('#hTurn');tc.textContent='دور: '+this.groups[this.turn].name;tc.style.setProperty('--c',this.groups[this.turn].color);tc.style.color=this.groups[this.turn].color;tc.style.borderColor=this.groups[this.turn].color},
+    const tc=$('#hTurn');tc.textContent='دور: '+this.groups[this.turn].name;tc.style.color=this.groups[this.turn].color;tc.style.borderColor=this.groups[this.turn].color},
   bump(i){const el=i?$('#hS2'):$('#hS1');el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')},
   nudge(i){const g=this.groups[i],v=prompt(`تعديل نقاط «${g.name}» (الحالي ${g.score}):`,g.score);
-    if(v!==null&&!isNaN(+v)){g.score=+v;this.hud();this.bump(i);this.lastMsg=`تعديل نقاط ${g.name}`;this.sync();}},
+    if(v!==null&&!isNaN(+v)){g.score=+v;this.hud();this.bump(i);this.lastMsg=`تعديل نقاط ${g.name}`;this.sync()}},
   spinGroups(){GW.spin(name=>{this.turn=this.groups.findIndex(g=>g.name===name);
-    $('#btnG').disabled=true;setTimeout(()=>$('#btnG').disabled=false,1200);
-    this.lastMsg=`${name} هتبدأ! 🔥`;
-    toast(`🔥 ${name} هي اللي هتبدأ!`);setTimeout(()=>this.toPlayer(),1100)})},
+    this.lastMsg=`${name} هتبدأ! 🔥`;toast(`🔥 ${name} هي اللي هتبدأ!`);setTimeout(()=>this.toPlayer(),1100)})},
   toPlayer(){const g=this.groups[this.turn],rem=g.players.filter(p=>!p.played);
     if(!rem.length){const o=this.groups[1-this.turn],orem=o.players.filter(p=>!p.played);
       if(!orem.length){this.lastMsg='كل اللاعبين لعبوا';this.ph('ph-allplayed');return}
@@ -849,13 +795,11 @@ const Match={game:'manana',groups:[],dur:60,turn:0,round:1,actor:null,char:null,
       this.turn=1-this.turn;this.round++;this.hud();return this.toPlayer()}
     this.hud();this.lastMsg=`دور ${g.name}`;this.ph('ph-pwheel');
     $('#pwheelTitle').textContent=`🎡 مين هيلعب من ${g.name}؟`;
-    $('#playedChips').innerHTML=g.players.filter(p=>p.played).map(p=>`<span class="chip" style="opacity:.6">✔ ${p.n} لعب</span>`).join(' ');
+    $('#playedChips').innerHTML=g.players.filter(p=>p.played).map(p=>`<span class="chip" style="opacity:.6">✔ ${esc(p.n)} لعب</span>`).join(' ');
     PW.set(rem.map(p=>p.n))},
   spinPlayer(){PW.spin(name=>{this.actor=this.groups[this.turn].players.find(p=>p.n===name);
-    $('#btnP').disabled=true;setTimeout(()=>$('#btnP').disabled=false,1200);
-    this.lastMsg=`${name} هيلعب الجولة دي 🌟`;
-    toast(`🌟 لاعب الجولة: ${name}`);
-    setTimeout(()=>this.game==='manana'?this.prepChar():this.prepCase(),1100)})},
+    this.lastMsg=`${name} هيلعب الجولة دي 🌟`;toast(`🌟 لاعب الجولة: ${name}`);
+    setTimeout(()=>this.prepChar(),1100)})},
   prepChar(){let i;do{i=rnd(0,Bank.chars.length-1)}while(this.used.has(i));this.used.add(i);this.char=Bank.chars[i];
     this.ph('ph-reveal');$('#rvActor').textContent=this.actor.n;
     $('#rvSecret').style.display='none';$('#rvHold').style.display='block'},
@@ -865,8 +809,7 @@ const Match={game:'manana',groups:[],dur:60,turn:0,round:1,actor:null,char:null,
     $('#actChip').textContent=`🎭 ${this.actor.n} بيمثّل — ${g.name} بتخمّن!`;
     this.left=this.dur;$('#maTime').textContent=this.left;$('#maRing').style.strokeDashoffset=0;
     this.actEndAt=Date.now()+this.dur*1000;
-    this.lastMsg=`${this.actor.n} بدأ يمثّل! 🎬`;
-    this.sync();
+    this.lastMsg=`${this.actor.n} بدأ يمثّل! 🎬`;this.sync();
     clearInterval(this.actT);
     this.actT=setInterval(()=>{this.left--;$('#maTime').textContent=Math.max(0,this.left);
       $('#maRing').style.strokeDashoffset=553*(1-this.left/this.dur);
@@ -878,33 +821,11 @@ const Match={game:'manana',groups:[],dur:60,turn:0,round:1,actor:null,char:null,
       this.lastMsg=`+10 لـ ${g.name}! 🎉`;toast(`🏅 +١٠ نقاط لـ ${g.name}!`)}
     else{Snd.lose();this.lastMsg=`${this.actor.n} ما عرفوش 😅`;toast('👏 تحية للاعبنا الشجاع')}
     this.actor.played=true;this.bump(this.turn);this.hud();this.next()},
-  prepCase(){this.case=pick(Bank.crimes);this.clueN=0;this.ph('ph-story');const g=this.groups[this.turn];
-    $('#stTitle').textContent='📁 '+this.case.t;
-    $('#stChip').textContent=`🕵️ تحقيق: ${g.name} — القائد: ${this.actor.n}`;
-    $('#stBody').textContent=this.case.s;$('#stClues').innerHTML='';
-    $('#stClueBtn').style.display='inline-flex';$('#stClueBtn').textContent='🔦 اكشف دليلًا (٠/٣)';
-    this.lastMsg=`قضية جديدة: ${this.case.t}`;this.sync()},
-  clue(){if(this.clueN>=3)return;$('#stClues').innerHTML+=`<div class="clue-chip">🔍 الدليل ${arNum(++this.clueN)}: ${this.case.c[this.clueN-1]}</div>`;
-    $('#stClueBtn').textContent=`🔦 اكشف دليلًا (${arNum(this.clueN)}/٣)`;
-    if(this.clueN>=3)$('#stClueBtn').style.display='none';Snd.tick()},
-  showSol(){this.ph('ph-crsolve');$('#crSolText').innerHTML=this.case.sol.replace(/\n/g,'<br>');Snd.lose()},
-  crSolved(mode){const g=this.groups[this.turn];
-    const pts=mode==='direct'?15:mode==='late'?5:0;
-    g.score+=pts;this.actor.played=true;
-    if(pts)this.acts[this.actor.n]=(this.acts[this.actor.n]||0)+1;
-    this.bump(this.turn);this.hud();
-    $('#crDoneMsg').textContent=mode==='direct'?`🎯 ${g.name} حلت اللغز قبل كشف الحل! +١٥ نقطة`
-      :mode==='late'?`👍 ${g.name} عرفته بعد كشف الحل — +٥ نقاط`
-      :`القضية اتقفلت… الحظ أوفر لـ ${g.name} المرة الجاية`;
-    this.lastMsg=$('#crDoneMsg').textContent;
-    pts>=15?(confetti(),Snd.success()):pts?Snd.success():Snd.lose();
-    this.ph('ph-crdone')},
   next(){this.turn=1-this.turn;this.round++;this.hud();
     this.lastMsg=`الدور دلوقتي: ${this.groups[this.turn].name}`;
     toast(`🔁 الدور دلوقتي: ${this.groups[this.turn].name}`);this.toPlayer()},
   newCycle(){this.groups.forEach(g=>g.players.forEach(p=>p.played=false));
-    this.lastMsg='جولة جديدة — الكل يلعب تاني! 🔁';
-    toast('🔁 جولة جديدة — الكل يقدر يلعب تاني!');this.toPlayer()},
+    this.lastMsg='جولة جديدة — الكل يلعب تاني! 🔁';toast('🔁 جولة جديدة!');this.toPlayer()},
   end(){clearInterval(this.tick);clearInterval(this.actT);
     const dur=Date.now()-this.t0;
     CLOUD_DATA.stats.matches=(CLOUD_DATA.stats.matches||0)+1;
@@ -912,60 +833,43 @@ const Match={game:'manana',groups:[],dur:60,turn:0,round:1,actor:null,char:null,
     Cloud.saveStats();
     if(Room.ch&&Room.host)Room.ch.postMessage({t:'g-end'});
     Report.show({groups:this.groups.map(g=>({name:g.name,color:g.color,score:g.score})),
-      dur,rounds:this.round-1,game:this.game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة',
+      dur,rounds:this.round-1,game:'🎭 من أنا؟',
       mvp:Object.entries(this.acts).sort((a,b)=>b[1]-a[1])[0],
       total:this.groups.reduce((s,g)=>s+g.score,0)});
     go('s-report')},
-  replay(){this.start(this.lastGame)}
+  replay(){this.start()}
 };
 
 /* ═══ البث المباشر ═══ */
-const Live={data:null,tick:null,
-  wait(game){
-    $('#waitGame').textContent=game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة';
-    $('#waitHost').textContent=Room.players[0]||'المضيف';
-    go('s-wait');
-  },
-  start(d){
-    this.data=d;
-    $('#liveGame').textContent=d.game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة';
-    go('s-live');
-    this.render({phase:'', g1:{name:d.g1,score:0}, g2:{name:d.g2,score:0}, turn:0, round:1, actor:null, lastMsg:'المباراة بدأت...'});
-  },
-  update(s){
-    this.data={...this.data, ...s};
-    this.render(s);
-  },
-  render(s){
-    $('#liveG1Name').textContent=s.g1.name; $('#liveG1Score').textContent=arNum(s.g1.score);
-    $('#liveG2Name').textContent=s.g2.name; $('#liveG2Score').textContent=arNum(s.g2.score);
+const Live={tick:null,
+  wait(game){$('#waitGame').textContent=game==='manana'?'🎭 من أنا؟':'🕵️ قصة الجريمة';
+    $('#waitHost').textContent=Room.players[0]||'المضيف';go('s-wait')},
+  start(d){$('#liveGame').textContent='🎭 من أنا؟';
+    $('#liveManana').style.display='block';$('#liveCrime').style.display='none';go('s-live');
+    this.update({phase:'',g1:{name:d.g1,score:0},g2:{name:d.g2,score:0},turn:0,round:1,actor:null,lastMsg:'المباراة بدأت...'})},
+  update(s){$('#liveG1Name').textContent=s.g1.name;$('#liveG1Score').textContent=arNum(s.g1.score);
+    $('#liveG2Name').textContent=s.g2.name;$('#liveG2Score').textContent=arNum(s.g2.score);
     $('#liveRound').textContent='الدور '+arNum(s.round);
     $('#liveTurn').textContent='دور: '+(s.turn===0?s.g1.name:s.g2.name);
     const ab=$('#liveActorBox');
-    if(s.actor){ab.style.display='block';$('#liveActor').textContent=s.actor}
-    else ab.style.display='none';
-    this.renderTimer(s);
-    if(s.lastMsg)$('#liveLast').textContent=s.lastMsg;
-    $('#liveSecret').style.display=(s.phase==='ph-reveal'||s.phase==='ph-crsolve')?'block':'none';
-  },
-  renderTimer(s){
+    if(s.actor){ab.style.display='block';$('#liveActor').textContent=s.actor}else ab.style.display='none';
     clearInterval(this.tick);
     const box=$('#liveTimerBox');
-    if(s.phase==='ph-act'&&s.actEndAt){
-      box.style.display='block';
-      this.tick=setInterval(()=>{
-        const left=Math.max(0,Math.ceil((s.actEndAt-Date.now())/1000));
+    if(s.phase==='ph-act'&&s.actEndAt){box.style.display='block';
+      this.tick=setInterval(()=>{const left=Math.max(0,Math.ceil((s.actEndAt-Date.now())/1000));
         $('#liveTimer').textContent=String(left).padStart(2,'0');
-        if(left<=0){clearInterval(this.tick);box.style.display='none'}
-      },500);
-    }else box.style.display='none';
-  },
-  end(){
-    $('#liveLast').textContent='🏁 المباراة انتهت!';
-    clearInterval(this.tick);
-    $('#liveTimerBox').style.display='none';
-    $('#liveSecret').style.display='none';
-  }
+        if(left<=0){clearInterval(this.tick);box.style.display='none'}},500)}
+    else box.style.display='none';
+    if(s.lastMsg)$('#liveLast').textContent=s.lastMsg;
+    $('#liveSecret').style.display=(s.phase==='ph-reveal')?'block':'none'},
+  crime(s){$('#liveGame').textContent='🕵️ قصة الجريمة';
+    $('#liveRound').textContent='القضية '+arNum(s.num);
+    $('#liveManana').style.display='none';$('#liveCrime').style.display='block';
+    $('#liveCrTitle').textContent='📁 '+s.title;
+    $('#liveCrBody').textContent=s.body;
+    $('#liveCrClues').innerHTML=(s.clues||[]).map((c,i)=>`<div class="clue-chip">🔍 الدليل ${arNum(i+1)}: ${c}</div>`).join('');
+    $('#liveCrInfo').textContent='✅ تم حل '+arNum(s.solved)+' قضية — الحل السرّي عند المضيف 🔒';
+    go('s-live')}
 };
 
 const Report={data:null,
@@ -973,48 +877,60 @@ const Report={data:null,
     $('#podium').innerHTML=(r[1]?`<div class="pod p2"><b>${r[1].name}</b><span class="psc">${arNum(r[1].score)}</span></div>`:'')+
       `<div class="pod p1"><b>${r[0].name} 👑</b><span class="psc">${arNum(r[0].score)}</span></div>`+
       (r[1]?`<div style="align-self:flex-end" class="mut small">المركز التاني 🥈</div>`:'');
-    $('#rankList').innerHTML=r.map((g,i)=>`<div class="kv"><span>${['🥇','🥈'][i]} ${g.name}</span><b>${arNum(g.score)} نقطة</b></div>`).join('');
+    $('#rankList').innerHTML=r.map((g,i)=>`<div class="kv"><span>${['🥇',''][i]} ${g.name}</span><b>${arNum(g.score)} نقطة</b></div>`).join('');
     $('#rpGame').textContent=d.game;$('#rpDur').textContent=fmtT(d.dur);
     $('#rpRounds').textContent=arNum(d.rounds);
     $('#rpMvp').textContent=d.mvp?`${d.mvp[0]} (${arNum(d.mvp[1])} فوز)`:'—';
     $('#rpTotal').textContent=arNum(d.total);
-    Home.init();
-    if(d.total>0)confetti()},
+    Home.init();if(d.total>0)confetti()},
   copy(){if(!this.data)return;const d=this.data,r=[...d.groups].sort((a,b)=>b.score-a.score);
     UI.copy(`🏆 تقرير S&J Games\n🎮 ${d.game} | ⏱️ ${fmtT(d.dur)}\n${r.map((g,i)=>`${['🥇','🥈'][i]} ${g.name} — ${g.score} نقطة`).join('\n')}\n🌟 النجم: ${d.mvp?d.mvp[0]:'—'}\n🔁 الأدوار: ${d.rounds}`,'تم نسخ التقرير ✅')}};
 
-/* ═══ الغرف ═══ */
-const Room={code:null,host:false,ch:null,players:[],roomSub:null,
+/* ═══ الغرف + الغرف المحفوظة ═══ */
+const Room={code:null,name:null,host:false,ch:null,players:[],roomSub:null,
   tab(t){$('#tabCreate').classList.toggle('on',t==='create');$('#tabJoin').classList.toggle('on',t==='join');
     $('#paneCreate').style.display=t==='create'?'block':'none';$('#paneJoin').style.display=t==='join'?'block':'none'},
-  create(){this.code=Array.from({length:5},()=>pick('ABCDEFGHJKMNPQRSTUVWXYZ23456789')).join('');
-    this.host=true;this.players=[USER.name];this.open();this.sys(`أنشأ ${USER.name} الغرفة 👑`);
-    this.saveRoom()},
-  join(){const c=$('#joinCode').value.trim().toUpperCase();if(c.length!==5)return toast('الرمز ٥ أحرف');
+  async create(){
+    const name=$('#roomName').value.trim()||('غرفة '+USER.name);
+    let code=$('#roomCodeInput').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+    if(code){
+      if(code.length<4)return toast('الرمز لازم يكون ٤ خانات على الأقل ❌');
+      try{const ex=await db.collection('rooms').doc(code).get();
+        if(ex.exists)return toast('الرمز ده مستخدم قبل كده — اختار غيره ❌')}catch(e){}
+    }else{
+      code=Array.from({length:5},()=>pick('ABCDEFGHJKMNPQRSTUVWXYZ23456789')).join('');
+    }
+    this.code=code;this.name=name;this.host=true;this.players=[USER.name];
+    this.open();this.sys(`أنشأ ${USER.name} الغرفة 👑`);
+    this.saveRoom();
+    Cloud.addRoom({code,name,role:'host',t:Date.now()});
+    $('#roomName').value='';$('#roomCodeInput').value=''},
+  join(){const c=$('#joinCode').value.trim().toUpperCase();if(c.length<4)return toast('الرمز ٤ خانات على الأقل');
     this.code=c;this.host=false;this.open();this.subscribeRoom();
-    this.ch&&this.ch.postMessage({t:'join',name:USER.name});this.sys('جارٍ الانضمام…')},
-  async saveRoom(){
-    try{
-      await db.collection('rooms').doc(this.code).set({
-        host:USER.name,
-        hostId:USER.uid,
-        players:this.players,
-        t:Date.now()
-      });
-    }catch(e){console.error(e)}
-  },
-  subscribeRoom(){
-    if(this.roomSub) this.roomSub();
-    this.roomSub = db.collection('rooms').doc(this.code).onSnapshot(doc=>{
-      if(doc.exists){
-        const d=doc.data();
-        this.players=d.players||[];
-        this.renderPlayers();
-        $('#hostNameDisp').textContent=this.players[0]||'المضيف';
-      }
-    });
-  },
-  open(){go('s-room');$('#roomCodeBig').textContent=this.code;$('#roomCodeTitle').textContent=this.code;
+    this.ch&&this.ch.postMessage({t:'join',name:USER.name});this.sys('جارٍ الانضمام…');
+    db.collection('rooms').doc(c).get().then(doc=>{
+      const nm=doc.exists?(doc.data().name||c):c;
+      this.name=nm;$('#roomNameTitle').textContent=nm;
+      Cloud.addRoom({code:c,name:nm,role:'guest',t:Date.now()})}).catch(()=>{})},
+  joinCode(code){$('#joinCode').value=code;this.join()},
+  async saveRoom(){try{await db.collection('rooms').doc(this.code).set({
+    name:this.name,host:USER.name,hostId:USER.uid,players:this.players,t:Date.now()})}catch(e){}},
+  subscribeRoom(){if(this.roomSub)this.roomSub();
+    this.roomSub=db.collection('rooms').doc(this.code).onSnapshot(doc=>{
+      if(doc.exists){const d=doc.data();this.players=d.players||[];this.renderPlayers();
+        $('#hostNameDisp').textContent=this.players[0]||'المضيف'}})},
+  renderMyRooms(){const list=CLOUD_DATA.rooms||[];
+    $('#myRoomsCard').style.display=list.length?'block':'none';
+    $('#myRoomsList').innerHTML=list.map(r=>`
+      <button class="room-item" onclick="Room.joinCode('${r.code}')">
+        <span style="font-size:28px">${r.role==='host'?'👑':'🎮'}</span>
+        <span style="flex:1"><b style="font-size:16px">${esc(r.name||r.code)}</b><br>
+        <span class="mut small">الرمز: <b style="color:var(--gold);letter-spacing:2px">${r.code}</b> · ${r.role==='host'?'أنت المضيف':'لاعب'}</span></span>
+        <span class="chip teal">دخول ←</span>
+      </button>`).join('')},
+  open(){go('s-room');$('#roomCodeBig').textContent=this.code;
+    $('#roomCodeTitle').textContent=this.code;
+    $('#roomNameTitle').textContent=this.name?this.name+' —':'';
     $('#chatBox').innerHTML='';$('#chatBox2').innerHTML='';this.renderPlayers();
     $('#chatFab').style.display='block';
     $('#hostControls').style.display=this.host?'block':'none';
@@ -1032,21 +948,23 @@ const Room={code:null,host:false,ch:null,players:[],roomSub:null,
     else if(d.t==='g-open')Live.wait(d.game)
     else if(d.t==='g-start')Live.start(d.data)
     else if(d.t==='g-state')Live.update(d.s)
-    else if(d.t==='g-end')Live.end()},
+    else if(d.t==='g-crime')Live.crime(d.s)
+    else if(d.t==='g-crime-end')go('s-room')
+    else if(d.t==='g-end'){Live.update({phase:'',lastMsg:'🏁 المباراة انتهت!'});$('#liveTimerBox').style.display='none'}},
   send(box){const i=$('#'+(box===2?'chatInput2':'chatInput')),v=i.value.trim();if(!v)return;i.value='';
     this.msg(USER.name,v,true);this.ch&&this.ch.postMessage({t:'chat',name:USER.name,text:v});Snd.click()},
   msg(n,text,me){[$('#chatBox'),$('#chatBox2')].forEach(b=>{if(!b)return;
     const d=document.createElement('div');d.className='msg '+(me?'me':'them');
-    d.innerHTML=`<b>${n}</b>${text.replace(/</g,'&lt;')}`;b.appendChild(d);b.scrollTop=b.scrollHeight})},
+    d.innerHTML=`<b>${esc(n)}</b>${esc(text)}`;b.appendChild(d);b.scrollTop=b.scrollHeight})},
   sys(t){[$('#chatBox'),$('#chatBox2')].forEach(b=>{if(!b)return;
     const d=document.createElement('div');d.className='msg sys';d.textContent='— '+t+' —';b.appendChild(d)})},
   renderPlayers(){$('#plCount').textContent=this.players.length;
-    $('#playerList').innerHTML=this.players.map((p,i)=>`<div class="chip" style="margin:0 0 6px;width:100%;justify-content:flex-start"><span class="dot"></span>${p}${i===0?' 👑':''}</div>`).join('')},
-  leave(){
-    if(this.roomSub){this.roomSub();this.roomSub=null}
+    $('#playerList').innerHTML=this.players.map((p,i)=>`<div class="chip" style="margin:0 0 6px;width:100%;justify-content:flex-start"><span class="dot"></span>${esc(p)}${i===0?' 👑':''}</div>`).join('')},
+  leave(){if(this.roomSub){this.roomSub();this.roomSub=null}
     if(this.host&&this.code){db.collection('rooms').doc(this.code).delete().catch(()=>{})}
     this.ch&&(this.ch.postMessage({t:'leave',name:USER.name}),this.ch.close());this.ch=null;
-    $('#chatFab').style.display='none';go('s-remote')}};
+    this.name=null;$('#chatFab').style.display='none';go('s-remote');this.renderMyRooms()}
+};
 
 const UI={copy(t,m){navigator.clipboard?navigator.clipboard.writeText(t).then(()=>toast(m)):toast('انسخ يدويًا')},
   settings(){$('#setSound').checked=Snd.on;$('#iosHint').style.display=/iphone|ipad/i.test(navigator.userAgent)?'block':'none';this.openModal('mSettings')},
@@ -1069,7 +987,7 @@ function holdReveal(el,done){let raf=null;const f=el.querySelector('.fill');
       if(p>=1){stop();done()}else raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)});
   ['pointerup','pointerleave','pointercancel'].forEach(ev=>el.addEventListener(ev,stop))}
 holdReveal($('#rvHold'),()=>Match.revealChar());
-holdReveal($('#stHold'),()=>Match.showSol());
+holdReveal($('#crHold'),()=>Crime.showSol(false));
 
 const PWA={deferred:null,
   icon(size){const c=document.createElement('canvas');c.width=c.height=size;const x=c.getContext('2d');
@@ -1089,10 +1007,10 @@ const PWA={deferred:null,
       $('#installBtn').style.display='inline-flex';$('#installBtn2').style.display='flex'});
     window.addEventListener('appinstalled',()=>toast('تم تثبيت S&J Games 🎉'))},
   install(){if(this.deferred){this.deferred.prompt();this.deferred=null}
-    else if(/iphone|ipad/i.test(navigator.userAgent))toast('📱 زر المشاركة ⎋ ← إضافة إلى الشاشة الرئيسية')
+    else if(/iphone|ipad/i.test(navigator.userAgent))toast('📱 زر المشاركة  ← إضافة إلى الشاشة الرئيسية')
     else toast('افتح قائمة المتصفح ⋮ ← «تثبيت التطبيق»')}};
 
-(function(){const ems=['🎭','🎲','🕵️','🎡','⏱️','🏆','🧩','🃏','🎯','🔍'],f=$('#floaties');
+(function(){const ems=['🎭','🎲','🕵️','🎡','️','🏆','','🃏','🎯','🔍'],f=$('#floaties');
   for(let i=0;i<12;i++){const s=document.createElement('span');s.textContent=ems[i%ems.length];
     s.style.cssText=`left:${rnd(2,92)}%;top:${rnd(4,90)}%;font-size:${rnd(30,80)}px;animation-duration:${rnd(9,18)}s;animation-delay:${rnd(0,6)}s`;f.appendChild(s)}})();
 
